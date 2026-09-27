@@ -20,10 +20,6 @@ import {
   X,
 } from "lucide-react";
 
-/* ============================================
-   MAIN NAVIGATION
-============================================ */
-
 const navigation = [
   {
     name: "Home",
@@ -75,17 +71,9 @@ export default function NavbarComponent() {
     setSavedCount,
   ] = useState(0);
 
-  /* ============================================
-     MOUNT
-  ============================================ */
-
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  /* ============================================
-     SAVED BOOK COUNT
-  ============================================ */
 
   useEffect(() => {
     const updateSavedCount =
@@ -139,25 +127,17 @@ export default function NavbarComponent() {
     };
   }, []);
 
-  /* ============================================
-     CLOSE MOBILE MENU AFTER ROUTE CHANGE
-  ============================================ */
-
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  /* ============================================
-     THEME
-  ============================================ */
+
 
   const isDark =
     mounted &&
     resolvedTheme === "dark";
 
-  /* ============================================
-     ACTIVE LINK
-  ============================================ */
+
 
   const isActive = (
     href: string
@@ -185,15 +165,9 @@ export default function NavbarComponent() {
     );
   };
 
-  /* ============================================
-     UI
-  ============================================ */
-
   return (
     <>
-      {/* ========================================
-          NAVBAR
-      ======================================== */}
+      {/*NAVBAR */}
 
       <header
         className="
@@ -229,9 +203,7 @@ export default function NavbarComponent() {
             xl:px-8
           "
         >
-          {/* ====================================
-              BRAND
-          ==================================== */}
+          {/* BRAND */}
 
           <Link
             href="/"
@@ -323,9 +295,7 @@ export default function NavbarComponent() {
             </div>
           </Link>
 
-          {/* ====================================
-              DESKTOP NAVIGATION
-          ==================================== */}
+          {/*DESKTOP NAVIGATION*/}
 
           <nav
             className="
@@ -428,9 +398,7 @@ export default function NavbarComponent() {
             )}
           </nav>
 
-          {/* ====================================
-              RIGHT SIDE
-          ==================================== */}
+          {/* RIGHT SIDE*/}
 
           <div
             className="
@@ -440,9 +408,7 @@ export default function NavbarComponent() {
               gap-2
             "
           >
-            {/* ==================================
-                LOGIN
-            ================================== */}
+            {/*LOGIN*/}
 
             <Link
               href="/login"
@@ -503,9 +469,7 @@ export default function NavbarComponent() {
               Login
             </Link>
 
-            {/* ==================================
-                REGISTER
-            ================================== */}
+            {/* REGISTER*/}
 
             <Link
               href="/register"
@@ -541,9 +505,7 @@ export default function NavbarComponent() {
               Register
             </Link>
 
-            {/* ==================================
-                DASHBOARD
-            ================================== */}
+            {/*DASHBOARD */}
 
             <Link
               href="/dashboard"
@@ -580,9 +542,7 @@ export default function NavbarComponent() {
               <LayoutDashboard className="h-4 w-4" />
             </Link>
 
-            {/* ==================================
-                THEME
-            ================================== */}
+            {/*THEME*/}
 
             <button
               type="button"
@@ -642,9 +602,7 @@ export default function NavbarComponent() {
               )}
             </button>
 
-            {/* ==================================
-                MOBILE MENU BUTTON
-            ================================== */}
+            {/* MOBILE MENU BUTTON */}
 
             <button
               type="button"

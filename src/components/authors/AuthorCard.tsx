@@ -40,14 +40,9 @@ export default function AuthorCard({
     .filter(Boolean)
     .pop();
 
-  const uniqueSubjects =
-    author.top_subjects
-      ? [
-          ...new Set(
-            author.top_subjects
-          ),
-        ]
-      : [];
+  const subjects = [
+    ...new Set(author.top_subjects ?? []),
+  ].slice(0, 3);
 
   return (
     <Card
@@ -58,7 +53,6 @@ export default function AuthorCard({
         h-[680px]
         w-full
         flex-col
-        gap-0
         overflow-hidden
         rounded-[24px]
         border
@@ -84,10 +78,7 @@ export default function AuthorCard({
         dark:hover:shadow-[0_0_0_1px_rgba(116,103,216,0.30),0_22px_60px_rgba(83,92,200,0.18),0_18px_50px_rgba(122,79,216,0.22)]
       "
     >
-      {/* =================================================
-          TOP ACCENT
-      ================================================= */}
-
+      {/* top accent */}
       <div
         className="
           absolute
@@ -103,10 +94,7 @@ export default function AuthorCard({
         "
       />
 
-      {/* =================================================
-          AUTHOR IMAGE
-      ================================================= */}
-
+      {/* author image */}
       <div
         className="
           relative
@@ -155,8 +143,6 @@ export default function AuthorCard({
           </div>
         )}
 
-        {/* IMAGE OVERLAY */}
-
         <div
           className="
             pointer-events-none
@@ -171,8 +157,6 @@ export default function AuthorCard({
             dark:from-[#070914]/85
           "
         />
-
-        {/* SMALL BADGE */}
 
         <div
           className="
@@ -203,8 +187,6 @@ export default function AuthorCard({
 
           Author
         </div>
-
-        {/* AUTHOR NAME ON IMAGE */}
 
         <div
           className="
@@ -241,20 +223,14 @@ export default function AuthorCard({
               <CalendarDays className="h-3.5 w-3.5" />
 
               <span>
-                Born{" "}
-                {
-                  author.birth_date
-                }
+                Born {author.birth_date}
               </span>
             </div>
           )}
         </div>
       </div>
 
-      {/* =================================================
-          CONTENT
-      ================================================= */}
-
+      {/* content */}
       <CardContent
         className="
           flex
@@ -265,8 +241,7 @@ export default function AuthorCard({
           pt-5
         "
       >
-        {/* WORK COUNT */}
-
+        {/* work count */}
         <div
           className="
             flex
@@ -280,7 +255,6 @@ export default function AuthorCard({
             to-[#FAF7FF]
             px-4
             py-3
-            transition-colors
 
             dark:border-[#394263]
             dark:from-[#20283F]
@@ -334,17 +308,11 @@ export default function AuthorCard({
               dark:text-[#A9B5FF]
             "
           >
-            {(
-              author.work_count ??
-              0
-            ).toLocaleString()}
+            {(author.work_count ?? 0).toLocaleString()}
           </span>
         </div>
 
-        {/* =================================================
-            POPULAR WORK
-        ================================================= */}
-
+        {/* popular work */}
         <div
           className="
             mt-5
@@ -354,7 +322,6 @@ export default function AuthorCard({
             border-[#E7E9F3]
             bg-white
             p-4
-            transition-colors
 
             dark:border-[#3D3D5F]
             dark:bg-[#1B1E2B]
@@ -409,15 +376,11 @@ export default function AuthorCard({
               dark:text-[#A5AABC]
             "
           >
-            {author.top_work ??
-              "No popular work available"}
+            {author.top_work ?? "No popular work available"}
           </p>
         </div>
 
-        {/* =================================================
-            SUBJECTS
-        ================================================= */}
-
+        {/* subjects */}
         <div className="mt-4 min-h-[82px]">
           <p
             className="
@@ -434,8 +397,7 @@ export default function AuthorCard({
             Subjects
           </p>
 
-          {uniqueSubjects.length >
-          0 ? (
+          {subjects.length > 0 ? (
             <div
               className="
                 flex
@@ -443,45 +405,36 @@ export default function AuthorCard({
                 gap-2
               "
             >
-              {uniqueSubjects
-                .slice(0, 3)
-                .map(
-                  (
-                    subject,
-                    index
-                  ) => (
-                    <span
-                      key={`${subject}-${index}`}
-                      className="
-                        rounded-full
-                        border
-                        border-[#DDE2F4]
-                        bg-gradient-to-r
-                        from-[#F2F5FF]
-                        to-[#F7F1FF]
-                        px-3
-                        py-1.5
-                        text-[11px]
-                        font-medium
-                        text-[#6268A9]
-                        transition
+              {subjects.map((subject) => (
+                <span
+                  key={subject}
+                  className="
+                    rounded-full
+                    border
+                    border-[#DDE2F4]
+                    bg-gradient-to-r
+                    from-[#F2F5FF]
+                    to-[#F7F1FF]
+                    px-3
+                    py-1.5
+                    text-[11px]
+                    font-medium
+                    text-[#6268A9]
+                    transition
 
-                        group-hover:border-[#C8CDF0]
+                    group-hover:border-[#C8CDF0]
 
-                        dark:border-[#465078]
-                        dark:from-[#252F50]
-                        dark:to-[#352548]
-                        dark:text-[#B8B8ED]
+                    dark:border-[#465078]
+                    dark:from-[#252F50]
+                    dark:to-[#352548]
+                    dark:text-[#B8B8ED]
 
-                        dark:group-hover:border-[#7169BB]
-                      "
-                    >
-                      {
-                        subject
-                      }
-                    </span>
-                  )
-                )}
+                    dark:group-hover:border-[#7169BB]
+                  "
+                >
+                  {subject}
+                </span>
+              ))}
             </div>
           ) : (
             <span
@@ -492,17 +445,13 @@ export default function AuthorCard({
                 dark:text-[#858B9D]
               "
             >
-              No subjects
-              available
+              No subjects available
             </span>
           )}
         </div>
       </CardContent>
 
-      {/* =================================================
-          FOOTER
-      ================================================= */}
-
+      {/* footer */}
       <CardFooter
         className="
           mt-auto

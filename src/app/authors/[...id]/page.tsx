@@ -6,12 +6,12 @@ import AuthorDetail, {
   type AuthorDetailType,
   type AuthorWorkType,
 } from "@/components/authors/AuthorDetail";
-
+//Create AuthorWorksResponse for store value
 interface AuthorWorksResponse {
   entries: AuthorWorkType[];
   size?: number;
 }
-
+//create getAuther for catch Author value
 async function getAuthor(
   id: string
 ): Promise<AuthorDetailType> {
@@ -43,7 +43,7 @@ async function getAuthor(
 
   return data;
 }
-
+//create getAutherWorks for catch AuthorWorks value
 async function getAuthorWorks(
   id: string
 ): Promise<AuthorWorkType[]> {

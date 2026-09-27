@@ -1,5 +1,9 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Home",
+};
 import {
   ArrowRight,
   BookHeart,
@@ -15,10 +19,6 @@ import {
 import AuthorImage from "@/components/authors/AuthorImage";
 import HomeSavedPreview from "@/components/home/HomeSavedPreview";
 import HeroAuthors from "@/components/home/HeroAuthor";
-
-/* =====================================================
-   TYPES
-===================================================== */
 
 interface Book {
   key: string;
@@ -43,10 +43,6 @@ interface AuthorResponse {
   docs: Author[];
 }
 
-/* =====================================================
-   GET ID
-===================================================== */
-
 function getId(
   key: string
 ) {
@@ -55,10 +51,6 @@ function getId(
     .filter(Boolean)
     .pop();
 }
-
-/* =====================================================
-   BOOKS WITH COVERS
-===================================================== */
 
 async function getBooks(
   query: string,
@@ -127,10 +119,6 @@ async function getBooks(
   }
 }
 
-/* =====================================================
-   AUTHOR PHOTO CHECK
-===================================================== */
-
 async function authorHasPhoto(
   authorId: string
 ) {
@@ -151,10 +139,6 @@ async function authorHasPhoto(
     return false;
   }
 }
-
-/* =====================================================
-   FIND AUTHOR WITH PHOTO
-===================================================== */
 
 async function searchAuthorWithPhoto(
   name: string
@@ -210,10 +194,6 @@ async function searchAuthorWithPhoto(
   }
 }
 
-/* =====================================================
-   AUTHORS
-===================================================== */
-
 async function getAuthorsWithPhotos() {
   const names = [
     "George Orwell",
@@ -262,9 +242,6 @@ async function getAuthorsWithPhotos() {
   );
 }
 
-/* =====================================================
-   HOME
-===================================================== */
 
 export default async function HomePage() {
   const [

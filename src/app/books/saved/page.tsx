@@ -1,5 +1,8 @@
 import BookSaved from "@/components/books/BookSaved";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Saved Books",
+};
 export default function SavedBooksPage() {
   return (
     <main

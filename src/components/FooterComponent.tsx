@@ -35,9 +35,6 @@ export default function Footer() {
         dark:to-[#21122F]
       "
     >
-      {/* ==========================================
-          BACKGROUND DECORATION
-      ========================================== */}
 
       <div
         className="
@@ -67,10 +64,6 @@ export default function Footer() {
         "
       />
 
-      {/* ==========================================
-          CONTAINER
-      ========================================== */}
-
       <div
         className="
           relative
@@ -87,9 +80,6 @@ export default function Footer() {
           lg:pt-16
         "
       >
-        {/* ==========================================
-            MAIN GRID
-        ========================================== */}
 
         <div
           className="
@@ -103,9 +93,6 @@ export default function Footer() {
             lg:gap-10
           "
         >
-          {/* ==========================================
-              BRAND
-          ========================================== */}
 
           <div
             className="
@@ -132,9 +119,6 @@ export default function Footer() {
                 lg:justify-start
               "
             >
-              {/* ======================================
-                  BIG JUST READ LOGO
-              ====================================== */}
 
               <div
                 className="
@@ -159,7 +143,6 @@ export default function Footer() {
                   lg:w-[88px]
                 "
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/just-read-logo.png"
                   alt="JUST READ Logo"
@@ -171,8 +154,6 @@ export default function Footer() {
                   "
                 />
               </div>
-
-              {/* WEBSITE NAME */}
 
               <div className="text-left">
                 <h2
@@ -206,8 +187,6 @@ export default function Footer() {
               </div>
             </Link>
 
-            {/* DESCRIPTION */}
-
             <p
               className="
                 mt-6
@@ -227,10 +206,6 @@ export default function Footer() {
               story is only one page away.
             </p>
 
-            {/* ======================================
-                SOCIAL MEDIA
-            ====================================== */}
-
             <div
               className="
                 mt-7
@@ -242,7 +217,6 @@ export default function Footer() {
                 lg:justify-start
               "
             >
-              {/* FACEBOOK */}
 
               <a
                 href="#"
@@ -271,8 +245,6 @@ export default function Footer() {
                 <FaFacebookF className="h-4 w-4" />
               </a>
 
-              {/* YOUTUBE */}
-
               <a
                 href="#"
                 aria-label="YouTube"
@@ -299,8 +271,6 @@ export default function Footer() {
               >
                 <FaYoutube className="h-4 w-4" />
               </a>
-
-              {/* GITHUB */}
 
               <a
                 href="#"
@@ -332,10 +302,6 @@ export default function Footer() {
               </a>
             </div>
           </div>
-
-          {/* ==========================================
-              NAVIGATION
-          ========================================== */}
 
           <div
             className="
@@ -411,10 +377,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* ==========================================
-              EXPLORE
-          ========================================== */}
-
           <div
             className="
               flex
@@ -489,10 +451,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* ==========================================
-              ABOUT PROJECT
-          ========================================== */}
-
           <div
             className="
               flex
@@ -529,7 +487,6 @@ export default function Footer() {
                 lg:items-start
               "
             >
-              {/* OPEN LIBRARY */}
 
               <div
                 className="
@@ -586,8 +543,6 @@ export default function Footer() {
                   </a>
                 </div>
               </div>
-
-              {/* CONTACT */}
 
               <div
                 className="
@@ -651,10 +606,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* ==========================================
-              ORGANIZED BY ISTAD
-          ========================================== */}
-
           <div
             className="
               flex
@@ -716,7 +667,6 @@ export default function Footer() {
                   lg:w-[155px]
                 "
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/istad-logo.png"
                   alt="ISTAD"
@@ -731,10 +681,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* ==========================================
-            DIVIDER
-        ========================================== */}
-
         <div
           className="
             my-10
@@ -746,10 +692,6 @@ export default function Footer() {
             to-transparent
           "
         />
-
-        {/* ==========================================
-            BOTTOM FOOTER
-        ========================================== */}
 
         <div
           className="
@@ -767,14 +709,11 @@ export default function Footer() {
             md:text-left
           "
         >
-          {/* COPYRIGHT */}
 
           <p>
             © {currentYear} JUST READ.
             All rights reserved.
           </p>
-
-          {/* LINKS */}
 
           <div
             className="
@@ -841,10 +780,6 @@ export default function Footer() {
             </a>
           </div>
         </div>
-
-        {/* ==========================================
-            SIGNATURE
-        ========================================== */}
 
         <div
           className="

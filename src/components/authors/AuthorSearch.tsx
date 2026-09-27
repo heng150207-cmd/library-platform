@@ -1,40 +1,37 @@
 "use client";
 
-import {
-  useState,
-  type FormEvent,
-} from "react";
-
-import {
-  Search,
-  Sparkles,
-} from "lucide-react";
+import { useState, type FormEvent } from "react";
+import { Search, Sparkles } from "lucide-react";
 
 interface AuthorSearchProps {
   onSearch: (query: string) => void;
   defaultValue?: string;
 }
+const suggestions = [
+  "George Orwell",
+  "Agatha Christie",
+  "Mark Twain",
+];
 
 export default function AuthorSearch({
   onSearch,
   defaultValue = "",
 }: AuthorSearchProps) {
-  const [searchInput, setSearchInput] =
-    useState(defaultValue);
+  const [searchInput, setSearchInput] = useState(defaultValue);
 
-  const handleSubmit = (
-    event: FormEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const query =
-      searchInput.trim();
+    const query = searchInput.trim();
 
-    if (!query) {
-      return;
-    }
+    if (!query) return;
 
     onSearch(query);
+  };
+
+  const handleSuggestion = (name: string) => {
+    setSearchInput(name);
+    onSearch(name);
   };
 
   return (
@@ -52,26 +49,17 @@ export default function AuthorSearch({
         shadow-[0_8px_30px_rgba(72,80,130,0.06)]
         transition-all
         duration-300
+
         md:p-5
 
         dark:border-[#465078]
-        dark:bg-gradient-to-r
         dark:from-[#181F34]
         dark:via-[#1C2031]
         dark:to-[#251B35]
         dark:shadow-[0_14px_40px_rgba(67,76,155,0.14)]
       "
     >
-      {/* TOP TEXT */}
-
-      <div
-        className="
-          mb-4
-          flex
-          items-center
-          gap-3
-        "
-      >
+      <div className="mb-4 flex items-center gap-3">
         <div
           className="
             flex
@@ -90,12 +78,7 @@ export default function AuthorSearch({
             dark:text-[#BEB6FF]
           "
         >
-          <Sparkles
-            className="
-              h-5
-              w-5
-            "
-          />
+          <Sparkles className="h-5 w-5" />
         </div>
 
         <div>
@@ -125,8 +108,6 @@ export default function AuthorSearch({
         </div>
       </div>
 
-      {/* SEARCH FORM */}
-
       <form
         onSubmit={handleSubmit}
         className="
@@ -134,18 +115,11 @@ export default function AuthorSearch({
           w-full
           flex-col
           gap-3
+
           sm:flex-row
         "
       >
-        {/* INPUT */}
-
-        <div
-          className="
-            group
-            relative
-            flex-1
-          "
-        >
+        <div className="group relative flex-1">
           <Search
             className="
               absolute
@@ -155,7 +129,7 @@ export default function AuthorSearch({
               w-5
               -translate-y-1/2
               text-[#8B90A5]
-              transition
+              transition-colors
 
               group-focus-within:text-[#5368CE]
 
@@ -167,11 +141,7 @@ export default function AuthorSearch({
           <input
             type="text"
             value={searchInput}
-            onChange={(event) =>
-              setSearchInput(
-                event.target.value
-              )
-            }
+            onChange={(event) => setSearchInput(event.target.value)}
             placeholder="Search author..."
             className="
               h-12
@@ -208,8 +178,6 @@ export default function AuthorSearch({
             "
           />
 
-          {/* SMALL ACCENT */}
-
           <div
             className="
               pointer-events-none
@@ -231,8 +199,6 @@ export default function AuthorSearch({
             "
           />
         </div>
-
-        {/* BUTTON */}
 
         <button
           type="submit"
@@ -276,6 +242,7 @@ export default function AuthorSearch({
               w-4
               transition-transform
               duration-300
+
               group-hover:scale-110
             "
           />
@@ -283,8 +250,6 @@ export default function AuthorSearch({
           Search
         </button>
       </form>
-
-      {/* QUICK SEARCH */}
 
       <div
         className="
@@ -308,18 +273,11 @@ export default function AuthorSearch({
           Try:
         </span>
 
-        {[
-          "George Orwell",
-          "Agatha Christie",
-          "Mark Twain",
-        ].map((name) => (
+        {suggestions.map((name) => (
           <button
             key={name}
             type="button"
-            onClick={() => {
-              setSearchInput(name);
-              onSearch(name);
-            }}
+            onClick={() => handleSuggestion(name)}
             className="
               rounded-full
               border
@@ -344,11 +302,9 @@ export default function AuthorSearch({
               dark:text-[#AAB2DF]
 
               dark:hover:border-[#7467D8]
-              dark:hover:bg-gradient-to-r
               dark:hover:from-[#243052]
               dark:hover:to-[#352548]
               dark:hover:text-[#C8C2FF]
-
               dark:hover:shadow-[0_0_0_1px_rgba(116,103,216,0.18),0_8px_24px_rgba(91,78,190,0.15)]
             "
           >

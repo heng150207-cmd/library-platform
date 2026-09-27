@@ -17,8 +17,6 @@ export default function AuthorImage({
   priority = false,
 }: AuthorImageProps) {
   const [imageError, setImageError] = useState(false);
-
-  // Reset error when another author is rendered
   useEffect(() => {
     setImageError(false);
   }, [authorId]);
@@ -33,8 +31,6 @@ export default function AuthorImage({
     .slice(0, 2)
     .map((word) => word.charAt(0).toUpperCase())
     .join("");
-
-  // Fallback if Open Library has no author image
   if (imageError) {
     return (
       <div
@@ -61,9 +57,6 @@ export default function AuthorImage({
   }
 
   return (
-    // Native img is used because many Open Library
-    // author images can return 404.
-    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={imageUrl}
       alt={name}

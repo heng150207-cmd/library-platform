@@ -54,6 +54,61 @@ interface AuthorDetailProps {
   authorId: string;
 }
 
+function ProfileDate({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: string;
+  color: string;
+}) {
+  return (
+    <div
+      className="
+        flex
+        items-center
+        justify-between
+        rounded-xl
+        bg-white/70
+        px-4
+        py-3
+        text-sm
+        shadow-sm
+
+        dark:bg-[#1A2033]/75
+        dark:shadow-none
+      "
+    >
+      <span
+        className="
+          flex
+          items-center
+          gap-2
+          text-[#7A7F95]
+
+          dark:text-[#A7ABBA]
+        "
+      >
+        <CalendarDays className={`h-4 w-4 ${color}`} />
+
+        {label}
+      </span>
+
+      <span
+        className="
+          font-semibold
+          text-[#30344A]
+
+          dark:text-[#F1F2F7]
+        "
+      >
+        {value}
+      </span>
+    </div>
+  );
+}
+
 export default function AuthorDetail({
   author,
   works,
@@ -65,10 +120,9 @@ export default function AuthorDetail({
       : author.bio?.value ??
         "No biography available for this author.";
 
-  const uniqueNames =
-    author.alternate_names
-      ? [...new Set(author.alternate_names)]
-      : [];
+  const alternateNames = [
+    ...new Set(author.alternate_names ?? []),
+  ];
 
   const externalLinks = [
     ...(author.wikipedia
@@ -79,7 +133,6 @@ export default function AuthorDetail({
           },
         ]
       : []),
-
     ...(author.links ?? []),
   ];
 
@@ -107,13 +160,11 @@ export default function AuthorDetail({
           max-w-7xl
           px-5
           py-10
+
           lg:px-8
         "
       >
-        {/* =================================================
-            BACK BUTTON
-        ================================================= */}
-
+        {/* back */}
         <Link
           href="/authors"
           className="
@@ -144,17 +195,14 @@ export default function AuthorDetail({
 
             dark:hover:border-[#7467D8]
             dark:hover:bg-[#25213A]
-            dark:hover:shadow-[0_0_0_1px_rgba(116,103,216,0.25),0_12px_30px_rgba(91,78,190,0.18)]
           "
         >
           <ArrowLeft className="h-4 w-4" />
+
           Back to Authors
         </Link>
 
-        {/* =================================================
-            AUTHOR PROFILE
-        ================================================= */}
-
+        {/* profile */}
         <section
           className="
             overflow-hidden
@@ -163,15 +211,12 @@ export default function AuthorDetail({
             border-[#E3E6F2]
             bg-white
             shadow-[0_18px_60px_rgba(75,78,130,0.09)]
-            transition-colors
-            duration-300
 
             dark:border-[#475183]
             dark:bg-gradient-to-br
             dark:from-[#181F34]
             dark:via-[#1C2031]
             dark:to-[#251B35]
-
             dark:shadow-[0_18px_60px_rgba(55,62,130,0.15)]
           "
         >
@@ -182,10 +227,7 @@ export default function AuthorDetail({
               lg:grid-cols-[360px_1fr]
             "
           >
-            {/* =============================================
-                LEFT PROFILE
-            ============================================= */}
-
+            {/* left profile */}
             <div
               className="
                 relative
@@ -202,8 +244,6 @@ export default function AuthorDetail({
                 dark:to-[#2A1D3D]
               "
             >
-              {/* DECORATION */}
-
               <div
                 className="
                   absolute
@@ -244,8 +284,7 @@ export default function AuthorDetail({
                   text-center
                 "
               >
-                {/* PHOTO */}
-
+                {/* photo */}
                 <div
                   className="
                     rounded-full
@@ -278,8 +317,6 @@ export default function AuthorDetail({
                   </div>
                 </div>
 
-                {/* NAME */}
-
                 <h1
                   className="
                     mt-7
@@ -295,8 +332,7 @@ export default function AuthorDetail({
                 </h1>
 
                 {author.personal_name &&
-                  author.personal_name !==
-                    author.name && (
+                  author.personal_name !== author.name && (
                     <p
                       className="
                         mt-2
@@ -309,8 +345,6 @@ export default function AuthorDetail({
                       {author.personal_name}
                     </p>
                   )}
-
-                {/* WORK BADGE */}
 
                 <div
                   className="
@@ -328,7 +362,6 @@ export default function AuthorDetail({
                     font-semibold
                     text-[#5865B9]
                     shadow-sm
-                    backdrop-blur
 
                     dark:border-[#465078]
                     dark:bg-[#1C2236]/80
@@ -339,8 +372,6 @@ export default function AuthorDetail({
 
                   {works.length} works
                 </div>
-
-                {/* DIVIDER */}
 
                 <div
                   className="
@@ -356,111 +387,27 @@ export default function AuthorDetail({
                   "
                 />
 
-                {/* DATES */}
-
-                <div
-                  className="
-                    w-full
-                    space-y-3
-                  "
-                >
+                <div className="w-full space-y-3">
                   {author.birth_date && (
-                    <div
-                      className="
-                        flex
-                        items-center
-                        justify-between
-                        rounded-xl
-                        bg-white/70
-                        px-4
-                        py-3
-                        text-sm
-                        shadow-sm
-
-                        dark:bg-[#1A2033]/75
-                        dark:shadow-none
-                      "
-                    >
-                      <span
-                        className="
-                          flex
-                          items-center
-                          gap-2
-                          text-[#7A7F95]
-
-                          dark:text-[#A7ABBA]
-                        "
-                      >
-                        <CalendarDays className="h-4 w-4 text-[#5368CE] dark:text-[#8FA2FF]" />
-
-                        Born
-                      </span>
-
-                      <span
-                        className="
-                          font-semibold
-                          text-[#30344A]
-
-                          dark:text-[#F1F2F7]
-                        "
-                      >
-                        {author.birth_date}
-                      </span>
-                    </div>
+                    <ProfileDate
+                      label="Born"
+                      value={author.birth_date}
+                      color="text-[#5368CE] dark:text-[#8FA2FF]"
+                    />
                   )}
 
                   {author.death_date && (
-                    <div
-                      className="
-                        flex
-                        items-center
-                        justify-between
-                        rounded-xl
-                        bg-white/70
-                        px-4
-                        py-3
-                        text-sm
-                        shadow-sm
-
-                        dark:bg-[#1A2033]/75
-                        dark:shadow-none
-                      "
-                    >
-                      <span
-                        className="
-                          flex
-                          items-center
-                          gap-2
-                          text-[#7A7F95]
-
-                          dark:text-[#A7ABBA]
-                        "
-                      >
-                        <CalendarDays className="h-4 w-4 text-[#7A4FD8] dark:text-[#BD94FF]" />
-
-                        Died
-                      </span>
-
-                      <span
-                        className="
-                          font-semibold
-                          text-[#30344A]
-
-                          dark:text-[#F1F2F7]
-                        "
-                      >
-                        {author.death_date}
-                      </span>
-                    </div>
+                    <ProfileDate
+                      label="Died"
+                      value={author.death_date}
+                      color="text-[#7A4FD8] dark:text-[#BD94FF]"
+                    />
                   )}
                 </div>
               </div>
             </div>
 
-            {/* =============================================
-                RIGHT CONTENT
-            ============================================= */}
-
+            {/* right content */}
             <div
               className="
                 p-7
@@ -468,8 +415,6 @@ export default function AuthorDetail({
                 lg:p-10
               "
             >
-              {/* TOP LABEL */}
-
               <div
                 className="
                   mb-8
@@ -534,10 +479,7 @@ export default function AuthorDetail({
                 </div>
               </div>
 
-              {/* =============================================
-                  BIOGRAPHY
-              ============================================= */}
-
+              {/* biography */}
               <section
                 className="
                   rounded-2xl
@@ -547,6 +489,7 @@ export default function AuthorDetail({
                   from-[#FBFCFF]
                   to-[#FAF8FF]
                   p-5
+
                   md:p-6
 
                   dark:border-[#40496D]
@@ -602,6 +545,7 @@ export default function AuthorDetail({
                     text-sm
                     leading-7
                     text-[#73798F]
+
                     md:text-base
 
                     dark:text-[#A9AEBF]
@@ -611,11 +555,8 @@ export default function AuthorDetail({
                 </p>
               </section>
 
-              {/* =============================================
-                  ALTERNATE NAMES
-              ============================================= */}
-
-              {uniqueNames.length > 0 && (
+              {/* alternate names */}
+              {alternateNames.length > 0 && (
                 <section className="mt-7">
                   <h2
                     className="
@@ -637,46 +578,38 @@ export default function AuthorDetail({
                       gap-2
                     "
                   >
-                    {uniqueNames
+                    {alternateNames
                       .slice(0, 12)
-                      .map(
-                        (
-                          name,
-                          index
-                        ) => (
-                          <span
-                            key={`${name}-${index}`}
-                            className="
-                              rounded-full
-                              border
-                              border-[#DDE2F2]
-                              bg-gradient-to-r
-                              from-[#F3F5FF]
-                              to-[#F7F2FF]
-                              px-3
-                              py-1.5
-                              text-xs
-                              font-medium
-                              text-[#6268A9]
+                      .map((name) => (
+                        <span
+                          key={name}
+                          className="
+                            rounded-full
+                            border
+                            border-[#DDE2F2]
+                            bg-gradient-to-r
+                            from-[#F3F5FF]
+                            to-[#F7F2FF]
+                            px-3
+                            py-1.5
+                            text-xs
+                            font-medium
+                            text-[#6268A9]
 
-                              dark:border-[#465078]
-                              dark:from-[#252F50]
-                              dark:to-[#352548]
-                              dark:text-[#BAB9EC]
-                            "
-                          >
-                            {name}
-                          </span>
-                        )
-                      )}
+                            dark:border-[#465078]
+                            dark:from-[#252F50]
+                            dark:to-[#352548]
+                            dark:text-[#BAB9EC]
+                          "
+                        >
+                          {name}
+                        </span>
+                      ))}
                   </div>
                 </section>
               )}
 
-              {/* =============================================
-                  EXTERNAL LINKS
-              ============================================= */}
-
+              {/* external links */}
               {externalLinks.length > 0 && (
                 <section className="mt-7">
                   <h2
@@ -701,62 +634,51 @@ export default function AuthorDetail({
                   >
                     {externalLinks
                       .slice(0, 5)
-                      .map(
-                        (
-                          link,
-                          index
-                        ) => {
-                          if (
-                            !link.url
-                          ) {
-                            return null;
-                          }
-
-                          return (
-                            <a
-                              key={`${link.url}-${index}`}
-                              href={
-                                link.url
-                              }
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="
-                                inline-flex
-                                items-center
-                                gap-2
-                                rounded-xl
-                                border
-                                border-[#DDE2F2]
-                                bg-white
-                                px-4
-                                py-2.5
-                                text-sm
-                                font-semibold
-                                text-[#5967BE]
-                                transition-all
-
-                                hover:border-[#C6CAEB]
-                                hover:bg-[#F4F2FF]
-                                hover:text-[#7653CF]
-
-                                dark:border-[#465078]
-                                dark:bg-[#1A1E2C]
-                                dark:text-[#AFBAFF]
-
-                                dark:hover:border-[#7467D8]
-                                dark:hover:bg-[#272039]
-                                dark:hover:text-[#D0C7FF]
-                                dark:hover:shadow-[0_0_0_1px_rgba(116,103,216,0.22),0_12px_30px_rgba(91,78,190,0.18)]
-                              "
-                            >
-                              {link.title ??
-                                "Open Link"}
-
-                              <ExternalLink className="h-4 w-4" />
-                            </a>
-                          );
+                      .map((link, index) => {
+                        if (!link.url) {
+                          return null;
                         }
-                      )}
+
+                        return (
+                          <a
+                            key={`${link.url}-${index}`}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="
+                              inline-flex
+                              items-center
+                              gap-2
+                              rounded-xl
+                              border
+                              border-[#DDE2F2]
+                              bg-white
+                              px-4
+                              py-2.5
+                              text-sm
+                              font-semibold
+                              text-[#5967BE]
+                              transition-all
+
+                              hover:border-[#C6CAEB]
+                              hover:bg-[#F4F2FF]
+                              hover:text-[#7653CF]
+
+                              dark:border-[#465078]
+                              dark:bg-[#1A1E2C]
+                              dark:text-[#AFBAFF]
+
+                              dark:hover:border-[#7467D8]
+                              dark:hover:bg-[#272039]
+                              dark:hover:text-[#D0C7FF]
+                            "
+                          >
+                            {link.title ?? "Open Link"}
+
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        );
+                      })}
                   </div>
                 </section>
               )}
@@ -764,10 +686,7 @@ export default function AuthorDetail({
           </div>
         </section>
 
-        {/* =================================================
-            BOOKS BY AUTHOR
-        ================================================= */}
-
+        {/* works */}
         <section className="mt-14">
           <div
             className="
@@ -775,6 +694,7 @@ export default function AuthorDetail({
               flex
               flex-col
               gap-2
+
               sm:flex-row
               sm:items-end
               sm:justify-between
@@ -840,8 +760,6 @@ export default function AuthorDetail({
             </div>
           </div>
 
-          {/* EMPTY */}
-
           {works.length === 0 ? (
             <div
               className="
@@ -861,7 +779,6 @@ export default function AuthorDetail({
                 dark:bg-gradient-to-br
                 dark:from-[#181F34]
                 dark:to-[#251B35]
-                dark:shadow-[0_14px_40px_rgba(67,76,155,0.13)]
               "
             >
               <div
@@ -915,244 +832,213 @@ export default function AuthorDetail({
                 grid
                 grid-cols-1
                 gap-6
+
                 sm:grid-cols-2
                 lg:grid-cols-3
                 xl:grid-cols-4
               "
             >
-              {works.map(
-                (
-                  work,
-                  index
-                ) => {
-                  const workId =
-                    work.key
-                      .split("/")
-                      .filter(Boolean)
-                      .pop();
+              {works.map((work) => {
+                const workId = work.key
+                  .split("/")
+                  .filter(Boolean)
+                  .pop();
 
-                  const coverId =
-                    work.covers?.find(
-                      (cover) =>
-                        cover >
-                        0
-                    );
+                const coverId = work.covers?.find(
+                  (cover) => cover > 0
+                );
 
-                  const coverUrl =
-                    coverId
-                      ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
-                      : null;
+                const coverUrl = coverId
+                  ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
+                  : null;
 
-                  return (
-                    <Link
-                      key={`${work.key}-${index}`}
-                      href={
-                        workId
-                          ? `/books/${workId}`
-                          : "#"
-                      }
+                return (
+                  <Link
+                    key={work.key}
+                    href={workId ? `/books/${workId}` : "#"}
+                    className="
+                      group
+                      flex
+                      min-h-[460px]
+                      flex-col
+                      overflow-hidden
+                      rounded-[22px]
+                      border
+                      border-[#E3E7F2]
+                      bg-white
+                      shadow-[0_8px_30px_rgba(72,80,130,0.06)]
+                      transition-all
+                      duration-300
+
+                      hover:-translate-y-2
+                      hover:border-[#C6CDF0]
+                      hover:shadow-[0_18px_45px_rgba(91,78,190,0.15)]
+
+                      dark:border-[#424B7A]
+                      dark:bg-gradient-to-br
+                      dark:from-[#181F34]
+                      dark:via-[#1C2031]
+                      dark:to-[#251B35]
+
+                      dark:hover:border-[#7569D6]
+                    "
+                  >
+                    <div
                       className="
-                        group
+                        relative
                         flex
-                        min-h-[460px]
-                        flex-col
+                        h-72
+                        items-center
+                        justify-center
                         overflow-hidden
-                        rounded-[22px]
-                        border
-                        border-[#E3E7F2]
-                        bg-white
-                        shadow-[0_8px_30px_rgba(72,80,130,0.06)]
-                        transition-all
-                        duration-300
+                        bg-gradient-to-br
+                        from-[#EEF2FF]
+                        to-[#F4EEFF]
 
-                        hover:-translate-y-2
-                        hover:border-[#C6CDF0]
-                        hover:shadow-[0_18px_45px_rgba(91,78,190,0.15)]
-
-                        dark:border-[#424B7A]
-                        dark:bg-gradient-to-br
-                        dark:from-[#181F34]
-                        dark:via-[#1C2031]
-                        dark:to-[#251B35]
-
-                        dark:shadow-[0_14px_40px_rgba(67,76,155,0.13)]
-
-                        dark:hover:border-[#7569D6]
-                        dark:hover:shadow-[0_0_0_1px_rgba(116,103,216,0.30),0_22px_60px_rgba(83,92,200,0.18),0_18px_50px_rgba(122,79,216,0.22)]
+                        dark:from-[#202945]
+                        dark:via-[#252743]
+                        dark:to-[#33223F]
                       "
                     >
-                      {/* COVER */}
+                      {coverUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={coverUrl}
+                          alt={work.title}
+                          loading="lazy"
+                          className="
+                            h-full
+                            w-full
+                            object-contain
+                            p-5
+                            transition-transform
+                            duration-500
+                            group-hover:scale-105
+                          "
+                        />
+                      ) : (
+                        <div
+                          className="
+                            flex
+                            h-16
+                            w-16
+                            items-center
+                            justify-center
+                            rounded-2xl
+                            bg-white/70
+                            text-[#6D64C6]
+
+                            dark:bg-[#1B2031]/80
+                            dark:text-[#B7B3FF]
+                          "
+                        >
+                          <BookOpen className="h-8 w-8" />
+                        </div>
+                      )}
 
                       <div
                         className="
-                          relative
-                          flex
-                          h-72
-                          items-center
-                          justify-center
-                          overflow-hidden
-                          bg-gradient-to-br
-                          from-[#EEF2FF]
-                          to-[#F4EEFF]
+                          absolute
+                          left-0
+                          right-0
+                          top-0
+                          h-1
+                          bg-gradient-to-r
+                          from-[#4867D6]
+                          to-[#7A4FD8]
+                        "
+                      />
+                    </div>
 
-                          dark:from-[#202945]
-                          dark:via-[#252743]
-                          dark:to-[#33223F]
+                    <div
+                      className="
+                        flex
+                        flex-1
+                        flex-col
+                        p-5
+                      "
+                    >
+                      <h3
+                        className="
+                          line-clamp-2
+                          text-base
+                          font-bold
+                          leading-6
+                          text-[#292C43]
+                          transition
+
+                          group-hover:text-[#625CC8]
+
+                          dark:text-[#F1F2F7]
+                          dark:group-hover:text-[#C2BCFF]
                         "
                       >
-                        {coverUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={
-                              coverUrl
-                            }
-                            alt={
-                              work.title
-                            }
-                            loading={
-                              index <
-                              4
-                                ? "eager"
-                                : "lazy"
-                            }
-                            className="
-                              h-full
-                              w-full
-                              object-contain
-                              p-5
-                              transition-transform
-                              duration-500
-                              group-hover:scale-105
-                            "
-                          />
-                        ) : (
+                        {work.title}
+                      </h3>
+
+                      <div className="mt-3 min-h-6">
+                        {work.first_publish_date && (
                           <div
                             className="
                               flex
-                              h-16
-                              w-16
                               items-center
-                              justify-center
-                              rounded-2xl
-                              bg-white/70
-                              text-[#6D64C6]
+                              gap-2
+                              text-xs
+                              text-[#7D8297]
 
-                              dark:bg-[#1B2031]/80
-                              dark:text-[#B7B3FF]
+                              dark:text-[#A0A6B8]
                             "
                           >
-                            <BookOpen className="h-8 w-8" />
+                            <CalendarDays
+                              className="
+                                h-3.5
+                                w-3.5
+                                text-[#6571C7]
+
+                                dark:text-[#98A7FF]
+                              "
+                            />
+
+                            Published {work.first_publish_date}
                           </div>
                         )}
+                      </div>
 
+                      <div className="mt-auto pt-5">
                         <div
                           className="
-                            absolute
-                            left-0
-                            right-0
-                            top-0
-                            h-1
+                            flex
+                            h-10
+                            w-full
+                            items-center
+                            justify-center
+                            gap-2
+                            rounded-xl
                             bg-gradient-to-r
                             from-[#4867D6]
                             to-[#7A4FD8]
-                          "
-                        />
-                      </div>
-
-                      {/* INFO */}
-
-                      <div
-                        className="
-                          flex
-                          flex-1
-                          flex-col
-                          p-5
-                        "
-                      >
-                        <h3
-                          className="
-                            line-clamp-2
-                            text-base
-                            font-bold
-                            leading-6
-                            text-[#292C43]
+                            text-sm
+                            font-semibold
+                            text-white
+                            shadow-md
+                            shadow-indigo-100
                             transition
 
-                            group-hover:text-[#625CC8]
+                            group-hover:shadow-lg
 
-                            dark:text-[#F1F2F7]
-                            dark:group-hover:text-[#C2BCFF]
+                            dark:from-[#566EE0]
+                            dark:to-[#8458D8]
                           "
                         >
-                          {work.title}
-                        </h3>
+                          View Book
 
-                        <div className="mt-3 min-h-6">
-                          {work.first_publish_date && (
-                            <div
-                              className="
-                                flex
-                                items-center
-                                gap-2
-                                text-xs
-                                text-[#7D8297]
-
-                                dark:text-[#A0A6B8]
-                              "
-                            >
-                              <CalendarDays className="h-3.5 w-3.5 text-[#6571C7] dark:text-[#98A7FF]" />
-
-                              Published{" "}
-                              {
-                                work.first_publish_date
-                              }
-                            </div>
-                          )}
-                        </div>
-
-                        <div
-                          className="
-                            mt-auto
-                            pt-5
-                          "
-                        >
-                          <div
-                            className="
-                              flex
-                              h-10
-                              w-full
-                              items-center
-                              justify-center
-                              gap-2
-                              rounded-xl
-                              bg-gradient-to-r
-                              from-[#4867D6]
-                              to-[#7A4FD8]
-                              text-sm
-                              font-semibold
-                              text-white
-                              shadow-md
-                              shadow-indigo-100
-                              transition
-
-                              group-hover:shadow-lg
-
-                              dark:from-[#566EE0]
-                              dark:to-[#8458D8]
-                              dark:shadow-[0_10px_28px_rgba(100,82,205,0.20)]
-                              dark:group-hover:shadow-[0_14px_36px_rgba(108,85,220,0.32)]
-                            "
-                          >
-                            View Book
-
-                            <BookOpen className="h-4 w-4" />
-                          </div>
+                          <BookOpen className="h-4 w-4" />
                         </div>
                       </div>
-                    </Link>
-                  );
-                }
-              )}
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           )}
         </section>
