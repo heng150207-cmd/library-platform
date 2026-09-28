@@ -25,7 +25,7 @@ export default function AuthorList() {
   const [authors, setAuthors] = useState<AuthorType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("tolkien");
+  const [query, setQuery] = useState("all");
   const [page, setPage] = useState(1);
   const [totalAuthors, setTotalAuthors] = useState(0);
 
@@ -165,7 +165,7 @@ export default function AuthorList() {
       {/* after handleSearch the logic will continue to the onSearch and data will show */}
         <AuthorSearch
           onSearch={handleSearch}
-          defaultValue="tolkien"
+          defaultValue="all"
         />
       </div>
 

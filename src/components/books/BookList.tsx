@@ -28,7 +28,7 @@ export default function BookList() {
     useState("");
 
   const [search, setSearch] =
-    useState("programming");
+    useState("all");
 
   const [totalBooks, setTotalBooks] =
     useState(0);
@@ -98,7 +98,7 @@ export default function BookList() {
       <div className="mb-8">
         <BookSearch
           onSearch={handleSearch}
-          defaultValue="programming"
+          defaultValue="all"
         />
       </div>
 
