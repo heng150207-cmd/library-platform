@@ -21,37 +21,37 @@ import {
 
 const team = [
   {
-    name: "Rith",
+    name: "Bun Tharith",
     role: "Team Leader",
     image: "/team/rith.png",
     skills: ["Frontend", "UI/UX", "Documentation"],
   },
   {
-    name: "Hong",
+    name: "Yun Menghong",
     role: "Team Member",
     image: "/team/hong.png",
     skills: ["Frontend", "UI/UX", "Documentation"],
   },
   {
-    name: "Heng",
+    name: "Chin Lyheng",
     role: "Team Member",
     image: "/team/heng.png",
     skills: ["Frontend", "UI/UX", "Documentation"],
   },
   {
-    name: "Nary",
+    name: "Mon Nary",
     role: "Team Member",
     image: "/team/nary.png",
     skills: ["Frontend", "UI/UX", "Documentation"],
   },
   {
-    name: "Maly",
+    name: "Sela Somaly",
     role: "Team Member",
     image: "/team/maly.png",
     skills: ["Frontend", "UI/UX", "Documentation"],
   },
   {
-    name: "Vin",
+    name: "Vy Thavin",
     role: "Team Member",
     image: "/team/vin.png",
     skills: ["Frontend", "UI/UX", "Documentation"],

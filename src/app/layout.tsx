@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import ThemeProvider from "@/components/ThemeProvider";
-import NavbarComponent from "@/components/NavbarComponent";
-import FooterComponent from "@/components/FooterComponent";
+import LayoutContent from "@/components/LayoutContent";
 
 export const metadata: Metadata = {
   metadataBase: new URL("http://localhost:3000"),
@@ -92,21 +91,9 @@ export default function RootLayout({
         "
       >
         <ThemeProvider>
-          <div
-            className="
-              flex
-              min-h-screen
-              flex-col
-            "
-          >
-            <NavbarComponent />
-
-            <div className="flex-1">
-              {children}
-            </div>
-
-            <FooterComponent />
-          </div>
+          <LayoutContent>
+            {children}
+          </LayoutContent>
         </ThemeProvider>
       </body>
     </html>
