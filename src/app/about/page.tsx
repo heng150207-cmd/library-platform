@@ -5,62 +5,87 @@ import {
   Target,
   Users,
 } from "lucide-react";
-import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "About",
-};
+
+import type { Metadata } from "next";
+
 import {
   FaGithub,
   FaGlobe,
   FaLinkedinIn,
 } from "react-icons/fa6";
 
-/* =====================================================
-   TEAM
-===================================================== */
+export const metadata: Metadata = {
+  title: "About",
+};
+
+const mentor = {
+  name: "Srorng Sokcheat",
+  role: "Project Mentor",
+  image: "/team/mentor.png",
+};
 
 const team = [
   {
     name: "Bun Tharith",
     role: "Team Leader",
     image: "/team/rith.png",
-    skills: ["Frontend", "UI/UX", "Documentation"],
+    skills: [
+      "Frontend",
+      "UI/UX",
+      "Documentation",
+    ],
   },
   {
     name: "Yun Menghong",
     role: "Team Member",
     image: "/team/hong.png",
-    skills: ["Frontend", "UI/UX", "Documentation"],
+    skills: [
+      "Frontend",
+      "UI/UX",
+      "Documentation",
+    ],
   },
   {
     name: "Chin Lyheng",
     role: "Team Member",
     image: "/team/heng.png",
-    skills: ["Frontend", "UI/UX", "Documentation"],
+    skills: [
+      "Frontend",
+      "UI/UX",
+      "Documentation",
+    ],
   },
   {
     name: "Mon Nary",
     role: "Team Member",
     image: "/team/nary.png",
-    skills: ["Frontend", "UI/UX", "Documentation"],
+    skills: [
+      "Frontend",
+      "UI/UX",
+      "Documentation",
+    ],
   },
   {
     name: "Sela Somaly",
     role: "Team Member",
     image: "/team/maly.png",
-    skills: ["Frontend", "UI/UX", "Documentation"],
+    skills: [
+      "Frontend",
+      "UI/UX",
+      "Documentation",
+    ],
   },
   {
     name: "Vy Thavin",
     role: "Team Member",
     image: "/team/vin.png",
-    skills: ["Frontend", "UI/UX", "Documentation"],
+    skills: [
+      "Frontend",
+      "UI/UX",
+      "Documentation",
+    ],
   },
 ];
-
-/* =====================================================
-   FEATURES
-===================================================== */
 
 const features = [
   {
@@ -83,10 +108,6 @@ const features = [
   },
 ];
 
-/* =====================================================
-   KEEP ORIGINAL MEMBER SKILL COLORS
-===================================================== */
-
 const getSkillStyle = (skill: string) => {
   switch (skill) {
     case "Frontend":
@@ -102,10 +123,6 @@ const getSkillStyle = (skill: string) => {
       return "border-gray-200 bg-gray-50 text-gray-600";
   }
 };
-
-/* =====================================================
-   ABOUT PAGE
-===================================================== */
 
 export default function AboutPage() {
   return (
@@ -126,16 +143,14 @@ export default function AboutPage() {
         dark:text-[#F3F4F8]
       "
     >
-      {/* =================================================
-          HERO
-      ================================================= */}
-
+      {/* HERO */}
       <section
         className="
           mx-auto
           max-w-[1440px]
           px-4
           pt-6
+
           sm:px-6
           lg:px-8
         "
@@ -212,6 +227,7 @@ export default function AboutPage() {
               items-end
               px-7
               pb-14
+
               sm:px-12
               lg:px-20
               lg:pb-16
@@ -236,6 +252,7 @@ export default function AboutPage() {
                 "
               >
                 <BookOpen className="h-4 w-4" />
+
                 About our journey
               </div>
 
@@ -246,6 +263,7 @@ export default function AboutPage() {
                   font-bold
                   tracking-tight
                   text-white
+
                   sm:text-6xl
                   lg:text-7xl
                 "
@@ -260,15 +278,14 @@ export default function AboutPage() {
                   text-base
                   leading-8
                   text-white/80
+
                   sm:text-lg
                 "
               >
-                We believe books have the power
-                to inspire, educate, and connect
-                people. Our platform was created
-                to make discovering books and
-                authors simple, clear, and
-                enjoyable.
+                We believe books have the power to inspire,
+                educate, and connect people. Our platform was
+                created to make discovering books and authors
+                simple, clear, and enjoyable.
               </p>
 
               <a
@@ -289,6 +306,7 @@ export default function AboutPage() {
                   shadow-lg
                   transition-all
                   duration-300
+
                   hover:-translate-y-0.5
                   hover:bg-[#F4F2FF]
                   hover:shadow-xl
@@ -313,10 +331,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* =================================================
-          INTRODUCTION
-      ================================================= */}
-
+      {/* INTRODUCTION */}
       <section
         className="
           mx-auto
@@ -360,6 +375,7 @@ export default function AboutPage() {
             font-bold
             tracking-tight
             text-[#24273D]
+
             sm:text-5xl
 
             dark:text-[#F3F4FA]
@@ -380,18 +396,14 @@ export default function AboutPage() {
             dark:text-[#A7ABBA]
           "
         >
-          Our project was created to provide
-          users with a simple and organized
-          place to discover books, learn about
-          authors, and explore useful
+          Our project was created to provide users with a
+          simple and organized place to discover books,
+          learn about authors, and explore useful
           information in one platform.
         </p>
       </section>
 
-      {/* =================================================
-          FEATURES
-      ================================================= */}
-
+      {/* FEATURES */}
       <section
         className="
           mx-auto
@@ -404,6 +416,7 @@ export default function AboutPage() {
           className="
             grid
             gap-5
+
             md:grid-cols-3
           "
         >
@@ -470,6 +483,7 @@ export default function AboutPage() {
                     text-[#6658C7]
                     transition-transform
                     duration-300
+
                     group-hover:scale-110
 
                     dark:from-[#282E4D]
@@ -511,10 +525,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* =================================================
-          TEAM SECTION
-      ================================================= */}
-
+      {/* TEAM SECTION */}
       <section
         id="team"
         className="
@@ -536,12 +547,8 @@ export default function AboutPage() {
             px-6
           "
         >
-          <div
-            className="
-              mb-14
-              text-center
-            "
-          >
+          {/* TEAM TITLE */}
+          <div className="mb-14 text-center">
             <div
               className="
                 mx-auto
@@ -586,6 +593,7 @@ export default function AboutPage() {
                 font-bold
                 tracking-tight
                 text-[#24273D]
+
                 sm:text-5xl
 
                 dark:text-[#F3F4F8]
@@ -606,21 +614,239 @@ export default function AboutPage() {
                 dark:text-[#A7ABBA]
               "
             >
-              Meet the six members behind our
-              project. We work together on
-              frontend development, UI/UX
-              design, and documentation.
+              Meet our mentor and the six members behind our
+              project. Together, we work on frontend
+              development, UI/UX design, and project
+              documentation.
             </p>
           </div>
 
-          {/* =================================================
-              TEAM GRID
-          ================================================= */}
+          {/* MENTOR */}
+          <div className="mb-16">
+            <div className="mb-7 text-center">
+              <p
+                className="
+                  text-xs
+                  font-semibold
+                  uppercase
+                  tracking-[0.2em]
+                  text-[#7077B5]
 
+                  dark:text-[#9995E8]
+                "
+              >
+                Project Guidance
+              </p>
+
+              <h3
+                className="
+                  mt-2
+                  text-2xl
+                  font-bold
+                  text-[#292C43]
+
+                  dark:text-[#F3F4F8]
+                "
+              >
+                Our Mentor
+              </h3>
+            </div>
+
+            <div className="flex justify-center">
+              <article
+                className="
+                  group
+                  relative
+                  flex
+                  w-full
+                  max-w-[520px]
+                  flex-col
+                  items-center
+                  overflow-hidden
+                  rounded-[30px]
+                  border
+                  border-[#DDE2F2]
+                  bg-gradient-to-br
+                  from-[#F9FBFF]
+                  via-white
+                  to-[#F8F3FF]
+                  px-8
+                  py-10
+                  text-center
+                  shadow-[0_16px_45px_rgba(72,80,130,0.08)]
+                  transition-all
+                  duration-300
+
+                  hover:-translate-y-1
+                  hover:border-[#C8CEF0]
+                  hover:shadow-[0_22px_55px_rgba(91,78,190,0.14)]
+
+                  dark:border-[#4A5385]
+                  dark:from-[#18223A]
+                  dark:via-[#1E2235]
+                  dark:to-[#271C39]
+                  dark:shadow-[0_14px_40px_rgba(67,76,155,0.14)]
+
+                  dark:hover:border-[#7467D8]
+                  dark:hover:shadow-[0_0_0_1px_rgba(116,103,216,0.30),0_22px_60px_rgba(83,92,200,0.18),0_18px_50px_rgba(122,79,216,0.22)]
+                "
+              >
+                <div
+                  className="
+                    absolute
+                    left-0
+                    right-0
+                    top-0
+                    h-1
+                    bg-gradient-to-r
+                    from-[#4867D6]
+                    via-[#6270D8]
+                    to-[#7A4FD8]
+                  "
+                />
+
+                <div
+                  className="
+                    mb-6
+                    rounded-full
+                    border
+                    border-[#DDE2F4]
+                    bg-gradient-to-r
+                    from-[#EEF2FF]
+                    to-[#F4EEFF]
+                    px-4
+                    py-2
+                    text-xs
+                    font-bold
+                    uppercase
+                    tracking-[0.18em]
+                    text-[#655CC1]
+
+                    dark:border-[#465078]
+                    dark:from-[#29365D]
+                    dark:to-[#3A294F]
+                    dark:text-[#C2BCFF]
+                  "
+                >
+                  Project Mentor
+                </div>
+
+                <div
+                  className="
+                    relative
+                    mb-6
+                    flex
+                    h-[200px]
+                    w-[200px]
+                    items-end
+                    justify-center
+                  "
+                >
+                  <div
+                    className="
+                      absolute
+                      bottom-3
+                      h-[150px]
+                      w-[150px]
+                      rounded-full
+                      bg-[#7561c9]
+                    "
+                  />
+
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={mentor.image}
+                    alt={mentor.name}
+                    className="
+                      relative
+                      z-10
+                      max-h-[195px]
+                      max-w-[185px]
+                      object-contain
+                    "
+                  />
+                </div>
+
+                <h3
+                  className="
+                    text-[26px]
+                    font-bold
+                    text-gray-900
+
+                    dark:text-[#F3F4F8]
+                  "
+                >
+                  {mentor.name}
+                </h3>
+
+                <p
+                  className="
+                    mt-2
+                    text-sm
+                    font-semibold
+                    text-[#655CC1]
+
+                    dark:text-[#BDB6FF]
+                  "
+                >
+                  {mentor.role}
+                </p>
+
+                <p
+                  className="
+                    mt-5
+                    max-w-sm
+                    text-sm
+                    leading-7
+                    text-[#7B8095]
+
+                    dark:text-[#A7ABBA]
+                  "
+                >
+                  Providing guidance, support, and feedback
+                  throughout the development of the JUST READ
+                  project.
+                </p>
+              </article>
+            </div>
+          </div>
+
+          {/* MEMBERS TITLE */}
+          <div className="mb-8 text-center">
+            <p
+              className="
+                text-xs
+                font-semibold
+                uppercase
+                tracking-[0.2em]
+                text-[#7077B5]
+
+                dark:text-[#9995E8]
+              "
+            >
+              Project Team
+            </p>
+
+            <h3
+              className="
+                mt-2
+                text-2xl
+                font-bold
+                text-[#292C43]
+
+                dark:text-[#F3F4F8]
+              "
+            >
+              Team Members
+            </h3>
+          </div>
+
+          {/* TEAM GRID */}
           <div
             className="
               grid
               gap-7
+
               sm:grid-cols-2
               lg:grid-cols-3
             "
@@ -651,19 +877,17 @@ export default function AboutPage() {
                   hover:shadow-gray-200/60
 
                   dark:border-[#4A5385]
-
                   dark:bg-gradient-to-br
                   dark:from-[#18223A]
                   dark:via-[#1E2235]
                   dark:to-[#271C39]
-
                   dark:shadow-[0_14px_40px_rgba(67,76,155,0.14)]
 
                   dark:hover:border-[#7467D8]
+                  dark:hover:shadow-[0_0_0_1px_rgba(116,103,216,0.45),0_22px_60px_rgba(83,92,200,0.20),0_18px_50px_rgba(122,79,216,0.24)]
                 "
               >
                 {/* PROFILE IMAGE */}
-
                 <div
                   className="
                     relative
@@ -701,7 +925,6 @@ export default function AboutPage() {
                 </div>
 
                 {/* NAME */}
-
                 <h3
                   className="
                     text-[22px]
@@ -715,7 +938,6 @@ export default function AboutPage() {
                 </h3>
 
                 {/* ROLE */}
-
                 <p
                   className="
                     mt-2
@@ -730,7 +952,6 @@ export default function AboutPage() {
                 </p>
 
                 {/* SKILLS */}
-
                 <div
                   className="
                     mt-5
@@ -759,7 +980,6 @@ export default function AboutPage() {
                 </div>
 
                 {/* SOCIAL ICONS */}
-
                 <div
                   className="
                     mt-8
@@ -847,10 +1067,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* =================================================
-          OUR STORY
-      ================================================= */}
-
+      {/* OUR STORY */}
       <section
         className="
           bg-gradient-to-r
@@ -859,6 +1076,7 @@ export default function AboutPage() {
           to-[#5F45A8]
           py-20
           text-white
+
           lg:py-28
 
           dark:from-[#11172F]
@@ -873,6 +1091,7 @@ export default function AboutPage() {
             max-w-[1280px]
             gap-14
             px-6
+
             lg:grid-cols-2
             lg:items-center
           "
@@ -969,11 +1188,12 @@ export default function AboutPage() {
                 text-4xl
                 font-bold
                 tracking-tight
+
                 sm:text-5xl
               "
             >
-              Created for people who love
-              discovering new ideas.
+              Created for people who love discovering new
+              ideas.
             </h2>
 
             <p
@@ -982,16 +1202,15 @@ export default function AboutPage() {
                 max-w-xl
                 leading-8
                 text-white/65
+
                 dark:text-white/70
               "
             >
-              We wanted to create more than
-              just a list of books. Our goal
-              was to build an experience that
-              helps users discover interesting
-              titles, understand authors, and
-              explore content without feeling
-              overwhelmed.
+              We wanted to create more than just a list of
+              books. Our goal was to build an experience
+              that helps users discover interesting titles,
+              understand authors, and explore content
+              without feeling overwhelmed.
             </p>
 
             <p
@@ -1000,14 +1219,14 @@ export default function AboutPage() {
                 max-w-xl
                 leading-8
                 text-white/65
+
                 dark:text-white/70
               "
             >
-              Through research, design,
-              development, testing, and
-              teamwork, the platform continued
-              to grow into a simple and modern
-              digital library experience.
+              Through research, design, development,
+              testing, and teamwork, the platform continued
+              to grow into a simple and modern digital
+              library experience.
             </p>
 
             <div
@@ -1055,10 +1274,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* =================================================
-          CTA
-      ================================================= */}
-
+      {/* CTA */}
       <section
         className="
           mx-auto
@@ -1170,8 +1386,8 @@ export default function AboutPage() {
                 dark:text-[#A8ADBD]
               "
             >
-              Explore books, discover authors,
-              and find your next favorite story.
+              Explore books, discover authors, and find your
+              next favorite story.
             </p>
 
             <a

@@ -58,7 +58,7 @@ export default function RegisterPage() {
   ) => {
     event.preventDefault();
 
-    router.push("/");
+    router.push("/login");
   };
 
   return (
