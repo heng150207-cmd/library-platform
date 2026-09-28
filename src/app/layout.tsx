@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
+
 import "./globals.css";
 
 import ThemeProvider from "@/components/ThemeProvider";
 import LayoutContent from "@/components/LayoutContent";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "http://localhost:3000";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("http://localhost:3000"),
+  metadataBase: new URL(siteUrl),
 
   title: {
     default: "Home | JUST READ",
@@ -13,34 +18,53 @@ export const metadata: Metadata = {
   },
 
   description:
-    "JUST READ is a book discovery platform where users can explore books, discover authors, save favorite books, and view recent Open Library activity.",
+    "JUST READ is a modern book discovery platform where users can explore books, discover authors, save favorite books, and follow recent Open Library activity.",
 
   keywords: [
     "JUST READ",
-    "Books",
-    "Authors",
+    "books",
+    "authors",
+    "book library",
+    "digital library",
     "Open Library",
-    "Reading",
-    "Saved Books",
-    "Book Discovery",
+    "book discovery",
+    "reading",
   ],
 
+  authors: [
+    {
+      name: "JUST READ Team",
+    },
+  ],
+
+  creator: "JUST READ Team",
+
+  publisher: "JUST READ",
+
   icons: {
-    icon: "/images/just-read-logo.png",
+    icon: [
+      {
+        url: "/images/just-read-logo.png",
+        type: "image/png",
+      },
+    ],
+
     shortcut: "/images/just-read-logo.png",
+
     apple: "/images/just-read-logo.png",
   },
 
   openGraph: {
-    title: {
-      default: "Home | JUST READ",
-      template: "%s | JUST READ",
-    },
+    title: "JUST READ",
 
     description:
       "Discover books, explore authors, save your favorites, and find your next story with JUST READ.",
 
+    url: siteUrl,
+
     siteName: "JUST READ",
+
+    locale: "en_US",
 
     type: "website",
 
@@ -49,7 +73,7 @@ export const metadata: Metadata = {
         url: "/images/just-read-thumbnail.png",
         width: 1200,
         height: 630,
-        alt: "JUST READ",
+        alt: "JUST READ - Discover Your Story",
       },
     ],
   },
@@ -66,6 +90,11 @@ export const metadata: Metadata = {
       "/images/just-read-thumbnail.png",
     ],
   },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -78,18 +107,7 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
     >
-      <body
-        className="
-          min-h-screen
-          bg-[#F7F8FC]
-          text-[#20233A]
-          transition-colors
-          duration-300
-
-          dark:bg-[#11131C]
-          dark:text-[#F1F2F7]
-        "
-      >
+      <body>
         <ThemeProvider>
           <LayoutContent>
             {children}
