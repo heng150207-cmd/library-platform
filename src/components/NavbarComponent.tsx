@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
-
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -48,59 +44,38 @@ const navigation = [
 ];
 
 export default function NavbarComponent() {
-  const pathname =
-    usePathname();
+  const pathname = usePathname();
+  const { resolvedTheme, setTheme } = useTheme();
 
-  const {
-    resolvedTheme,
-    setTheme,
-  } = useTheme();
-
-  const [
-    mounted,
-    setMounted,
-  ] = useState(false);
-
-  const [
-    mobileMenuOpen,
-    setMobileMenuOpen,
-  ] = useState(false);
-
-  const [
-    savedCount,
-    setSavedCount,
-  ] = useState(0);
+  const [mounted, setMounted] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [savedCount, setSavedCount] = useState(0);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    const updateSavedCount =
-      () => {
-        try {
-          const stored =
-            localStorage.getItem(
-              "savedBooks"
-            );
+    const updateSavedCount = () => {
+      try {
+        const stored = localStorage.getItem("savedBooks");
 
-          if (!stored) {
-            setSavedCount(0);
-            return;
-          }
-
-          const parsed =
-            JSON.parse(stored);
-
-          setSavedCount(
-            Array.isArray(parsed)
-              ? parsed.length
-              : 0
-          );
-        } catch {
+        if (!stored) {
           setSavedCount(0);
+          return;
         }
-      };
+
+        const parsed = JSON.parse(stored);
+
+        setSavedCount(
+          Array.isArray(parsed)
+            ? parsed.length
+            : 0
+        );
+      } catch {
+        setSavedCount(0);
+      }
+    };
 
     updateSavedCount();
 
@@ -131,17 +106,10 @@ export default function NavbarComponent() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-
-
   const isDark =
-    mounted &&
-    resolvedTheme === "dark";
+    mounted && resolvedTheme === "dark";
 
-
-
-  const isActive = (
-    href: string
-  ) => {
+  const isActive = (href: string) => {
     if (href === "/") {
       return pathname === "/";
     }
@@ -149,32 +117,26 @@ export default function NavbarComponent() {
     if (href === "/books") {
       return (
         pathname === "/books" ||
-        (
-          pathname.startsWith(
-            "/books/"
-          ) &&
-          !pathname.startsWith(
-            "/books/saved"
-          )
-        )
+        (pathname.startsWith("/books/") &&
+          !pathname.startsWith("/books/saved"))
       );
     }
 
-    return pathname.startsWith(
-      href
-    );
+    return pathname.startsWith(href);
   };
 
   return (
     <>
-      {/*NAVBAR */}
-
+      {/* NAVBAR */}
       <header
         className="
-          sticky
+          fixed
+          left-0
+          right-0
           top-0
-          z-50
+          z-[100]
           h-[76px]
+          w-full
           border-b
           border-[#E5E8F2]
           bg-white/95
@@ -197,14 +159,11 @@ export default function NavbarComponent() {
             px-4
 
             sm:px-5
-
             lg:px-6
-
             xl:px-8
           "
         >
           {/* BRAND */}
-
           <Link
             href="/"
             className="
@@ -215,8 +174,6 @@ export default function NavbarComponent() {
               gap-3
             "
           >
-            {/* LOGO */}
-
             <div
               className="
                 flex
@@ -250,14 +207,7 @@ export default function NavbarComponent() {
               />
             </div>
 
-            {/* NAME */}
-
-            <div
-              className="
-                min-w-0
-                leading-none
-              "
-            >
+            <div className="min-w-0 leading-none">
               <h1
                 className="
                   truncate
@@ -295,8 +245,7 @@ export default function NavbarComponent() {
             </div>
           </Link>
 
-          {/*DESKTOP NAVIGATION*/}
-
+          {/* DESKTOP NAVIGATION */}
           <nav
             className="
               hidden
@@ -304,112 +253,87 @@ export default function NavbarComponent() {
               gap-0.5
 
               lg:flex
-
               xl:gap-1
             "
           >
-            {navigation.map(
-              (item) => {
-                const active =
-                  isActive(
-                    item.href
-                  );
+            {navigation.map((item) => {
+              const active = isActive(item.href);
 
-                return (
-                  <Link
-                    key={
-                      item.name
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`
+                    relative
+                    rounded-xl
+                    px-2.5
+                    py-2.5
+                    text-[13px]
+                    font-semibold
+                    transition-all
+                    duration-200
+
+                    xl:px-3
+                    xl:text-sm
+
+                    ${
+                      active
+                        ? `
+                          bg-gradient-to-r
+                          from-[#EEF2FF]
+                          to-[#F4EEFF]
+                          text-[#655CC1]
+
+                          dark:from-[#273253]
+                          dark:to-[#352548]
+                          dark:text-[#C2BCFF]
+                        `
+                        : `
+                          text-[#697086]
+
+                          hover:bg-[#F5F6FB]
+                          hover:text-[#4F5FB6]
+
+                          dark:text-[#A4AABC]
+                          dark:hover:bg-[#1D2230]
+                          dark:hover:text-[#C2BCFF]
+                        `
                     }
-                    href={
-                      item.href
-                    }
-                    className={`
-                      relative
-                      rounded-xl
-                      px-2.5
-                      py-2.5
-                      text-[13px]
-                      font-semibold
-                      transition-all
-                      duration-200
+                  `}
+                >
+                  {item.name}
 
-                      xl:px-3
-                      xl:text-sm
-
-                      ${
-                        active
-                          ? `
-                            bg-gradient-to-r
-                            from-[#EEF2FF]
-                            to-[#F4EEFF]
-                            text-[#655CC1]
-
-                            dark:from-[#273253]
-                            dark:to-[#352548]
-                            dark:text-[#C2BCFF]
-                          `
-                          : `
-                            text-[#697086]
-
-                            hover:bg-[#F5F6FB]
-                            hover:text-[#4F5FB6]
-
-                            dark:text-[#A4AABC]
-                            dark:hover:bg-[#1D2230]
-                            dark:hover:text-[#C2BCFF]
-                          `
-                      }
-                    `}
-                  >
-                    {item.name}
-
-                    {/* SAVED COUNT */}
-
-                    {item.name ===
-                      "Saved" &&
-                      savedCount >
-                        0 && (
-                        <span
-                          className="
-                            ml-1
-                            inline-flex
-                            min-w-5
-                            items-center
-                            justify-center
-                            rounded-full
-                            bg-gradient-to-r
-                            from-[#4867D6]
-                            to-[#7A4FD8]
-                            px-1.5
-                            py-0.5
-                            text-[9px]
-                            font-bold
-                            text-white
-                          "
-                        >
-                          {
-                            savedCount
-                          }
-                        </span>
-                      )}
-                  </Link>
-                );
-              }
-            )}
+                  {item.name === "Saved" &&
+                    savedCount > 0 && (
+                      <span
+                        className="
+                          ml-1
+                          inline-flex
+                          min-w-5
+                          items-center
+                          justify-center
+                          rounded-full
+                          bg-gradient-to-r
+                          from-[#4867D6]
+                          to-[#7A4FD8]
+                          px-1.5
+                          py-0.5
+                          text-[9px]
+                          font-bold
+                          text-white
+                        "
+                      >
+                        {savedCount}
+                      </span>
+                    )}
+                </Link>
+              );
+            })}
           </nav>
 
-          {/* RIGHT SIDE*/}
-
-          <div
-            className="
-              flex
-              shrink-0
-              items-center
-              gap-2
-            "
-          >
-            {/*LOGIN*/}
-
+          {/* RIGHT SIDE */}
+          <div className="flex shrink-0 items-center gap-2">
+            {/* LOGIN */}
             <Link
               href="/login"
               className={`
@@ -429,8 +353,7 @@ export default function NavbarComponent() {
                 xl:flex
 
                 ${
-                  pathname ===
-                  "/login"
+                  pathname === "/login"
                     ? `
                       border-[#C7CEF0]
                       bg-gradient-to-r
@@ -465,12 +388,10 @@ export default function NavbarComponent() {
               `}
             >
               <LogIn className="h-4 w-4" />
-
               Login
             </Link>
 
-            {/* REGISTER*/}
-
+            {/* REGISTER */}
             <Link
               href="/register"
               className="
@@ -501,12 +422,10 @@ export default function NavbarComponent() {
               "
             >
               <UserPlus className="h-4 w-4" />
-
               Register
             </Link>
 
-            {/*DASHBOARD */}
-
+            {/* DASHBOARD */}
             <Link
               href="/dashboard"
               title="Dashboard"
@@ -542,8 +461,7 @@ export default function NavbarComponent() {
               <LayoutDashboard className="h-4 w-4" />
             </Link>
 
-            {/*THEME*/}
-
+            {/* THEME */}
             <button
               type="button"
               aria-label="Toggle theme"
@@ -555,9 +473,7 @@ export default function NavbarComponent() {
                   : "Toggle theme"
               }
               onClick={() => {
-                if (!mounted) {
-                  return;
-                }
+                if (!mounted) return;
 
                 setTheme(
                   isDark
@@ -602,15 +518,13 @@ export default function NavbarComponent() {
               )}
             </button>
 
-            {/* MOBILE MENU BUTTON */}
-
+            {/* MOBILE MENU */}
             <button
               type="button"
               aria-label="Toggle menu"
               onClick={() =>
                 setMobileMenuOpen(
-                  (current) =>
-                    !current
+                  (current) => !current
                 )
               }
               className="
@@ -651,10 +565,7 @@ export default function NavbarComponent() {
         </div>
       </header>
 
-      {/* ========================================
-          MOBILE MENU
-      ======================================== */}
-
+      {/* MOBILE MENU */}
       {mobileMenuOpen && (
         <div
           className="
@@ -662,7 +573,7 @@ export default function NavbarComponent() {
             left-0
             right-0
             top-[76px]
-            z-40
+            z-[90]
             max-h-[calc(100vh-76px)]
             overflow-y-auto
             border-b
@@ -687,93 +598,74 @@ export default function NavbarComponent() {
               gap-2
             "
           >
-            {/* MAIN LINKS */}
+            {navigation.map((item) => {
+              const active = isActive(item.href);
 
-            {navigation.map(
-              (item) => {
-                const active =
-                  isActive(
-                    item.href
-                  );
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`
+                    flex
+                    items-center
+                    justify-between
+                    rounded-xl
+                    px-4
+                    py-3
+                    text-sm
+                    font-semibold
+                    transition-all
 
-                return (
-                  <Link
-                    key={
-                      item.name
+                    ${
+                      active
+                        ? `
+                          bg-gradient-to-r
+                          from-[#EEF2FF]
+                          to-[#F4EEFF]
+                          text-[#655CC1]
+
+                          dark:from-[#273253]
+                          dark:to-[#352548]
+                          dark:text-[#C2BCFF]
+                        `
+                        : `
+                          text-[#656C83]
+
+                          hover:bg-[#F5F6FB]
+
+                          dark:text-[#A4AABC]
+                          dark:hover:bg-[#202432]
+                        `
                     }
-                    href={
-                      item.href
-                    }
-                    className={`
-                      flex
-                      items-center
-                      justify-between
-                      rounded-xl
-                      px-4
-                      py-3
-                      text-sm
-                      font-semibold
-                      transition-all
+                  `}
+                >
+                  <span>{item.name}</span>
 
-                      ${
-                        active
-                          ? `
-                            bg-gradient-to-r
-                            from-[#EEF2FF]
-                            to-[#F4EEFF]
-                            text-[#655CC1]
-
-                            dark:from-[#273253]
-                            dark:to-[#352548]
-                            dark:text-[#C2BCFF]
-                          `
-                          : `
-                            text-[#656C83]
-
-                            hover:bg-[#F5F6FB]
-
-                            dark:text-[#A4AABC]
-                            dark:hover:bg-[#202432]
-                          `
-                      }
-                    `}
-                  >
-                    <span>
-                      {item.name}
-                    </span>
-
-                    {item.name ===
-                      "Saved" &&
-                      savedCount >
-                        0 && (
-                        <span
-                          className="
-                            inline-flex
-                            min-w-6
-                            items-center
-                            justify-center
-                            rounded-full
-                            bg-gradient-to-r
-                            from-[#4867D6]
-                            to-[#7A4FD8]
-                            px-2
-                            py-1
-                            text-[10px]
-                            font-bold
-                            text-white
-                          "
-                        >
-                          {
-                            savedCount
-                          }
-                        </span>
-                      )}
-                  </Link>
-                );
-              }
-            )}
-
-            {/* SEPARATOR */}
+                  {item.name === "Saved" &&
+                    savedCount > 0 && (
+                      <span
+                        className="
+                          inline-flex
+                          min-w-6
+                          items-center
+                          justify-center
+                          rounded-full
+                          bg-gradient-to-r
+                          from-[#4867D6]
+                          to-[#7A4FD8]
+                          px-2
+                          py-1
+                          text-[10px]
+                          font-bold
+                          text-white
+                        "
+                      >
+                        {savedCount}
+                      </span>
+                    )}
+                </Link>
+              );
+            })}
 
             <div
               className="
@@ -785,17 +677,8 @@ export default function NavbarComponent() {
               "
             />
 
-            {/* ==================================
-                LOGIN + REGISTER MOBILE
-            ================================== */}
-
-            <div
-              className="
-                grid
-                grid-cols-2
-                gap-3
-              "
-            >
+            {/* LOGIN + REGISTER */}
+            <div className="grid grid-cols-2 gap-3">
               <Link
                 href="/login"
                 className="
@@ -827,7 +710,6 @@ export default function NavbarComponent() {
                 "
               >
                 <LogIn className="h-4 w-4" />
-
                 Login
               </Link>
 
@@ -856,15 +738,11 @@ export default function NavbarComponent() {
                 "
               >
                 <UserPlus className="h-4 w-4" />
-
                 Register
               </Link>
             </div>
 
-            {/* ==================================
-                DASHBOARD MOBILE
-            ================================== */}
-
+            {/* DASHBOARD */}
             <Link
               href="/dashboard"
               className="
@@ -897,12 +775,10 @@ export default function NavbarComponent() {
               "
             >
               <LayoutDashboard className="h-4 w-4" />
-
               Dashboard
             </Link>
 
-            {/* SAVED SUMMARY */}
-
+            {/* SAVED */}
             <Link
               href="/books/saved"
               className="

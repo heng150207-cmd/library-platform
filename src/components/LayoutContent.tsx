@@ -21,19 +21,21 @@ export default function LayoutContent({
   return (
     <div className="flex min-h-screen flex-col">
       {!hideNavbarFooter && (
-        <div id="site-navbar">
-          <NavbarComponent />
-        </div>
+        <NavbarComponent />
       )}
 
-      <main className="flex-1">
+      <main
+        className={
+          hideNavbarFooter
+            ? "flex-1"
+            : "flex-1 pt-[76px]"
+        }
+      >
         {children}
       </main>
 
       {!hideNavbarFooter && (
-        <div id="site-footer">
-          <FooterComponent />
-        </div>
+        <FooterComponent />
       )}
     </div>
   );
