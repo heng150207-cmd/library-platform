@@ -50,7 +50,8 @@ export default function AuthorCard({
         group
         relative
         flex
-        h-[680px]
+        h-full
+        min-h-[680px]
         w-full
         flex-col
         overflow-hidden
@@ -78,7 +79,7 @@ export default function AuthorCard({
         dark:hover:shadow-[0_0_0_1px_rgba(116,103,216,0.30),0_22px_60px_rgba(83,92,200,0.18),0_18px_50px_rgba(122,79,216,0.22)]
       "
     >
-      {/* top accent */}
+      {/* Top accent */}
       <div
         className="
           absolute
@@ -94,12 +95,13 @@ export default function AuthorCard({
         "
       />
 
-      {/* author image */}
+      {/* Author image */}
       <div
         className="
           relative
           h-64
           min-h-64
+          shrink-0
           overflow-hidden
           bg-gradient-to-br
           from-[#EEF2FF]
@@ -149,10 +151,9 @@ export default function AuthorCard({
             absolute
             inset-0
             bg-gradient-to-t
-            from-[#20233A]/65
+            from-[#20233A]/70
             via-transparent
             to-transparent
-            opacity-60
 
             dark:from-[#070914]/85
           "
@@ -169,7 +170,7 @@ export default function AuthorCard({
             rounded-full
             border
             border-white/40
-            bg-white/85
+            bg-white/90
             px-3
             py-1.5
             text-[11px]
@@ -184,7 +185,6 @@ export default function AuthorCard({
           "
         >
           <Sparkles className="h-3.5 w-3.5" />
-
           Author
         </div>
 
@@ -217,7 +217,7 @@ export default function AuthorCard({
                 items-center
                 gap-1.5
                 text-xs
-                text-white/80
+                text-white/85
               "
             >
               <CalendarDays className="h-3.5 w-3.5" />
@@ -230,7 +230,7 @@ export default function AuthorCard({
         </div>
       </div>
 
-      {/* content */}
+      {/* Content */}
       <CardContent
         className="
           flex
@@ -241,10 +241,11 @@ export default function AuthorCard({
           pt-5
         "
       >
-        {/* work count */}
+        {/* Published works */}
         <div
           className="
             flex
+            shrink-0
             items-center
             justify-between
             rounded-2xl
@@ -261,18 +262,13 @@ export default function AuthorCard({
             dark:to-[#2A203A]
           "
         >
-          <div
-            className="
-              flex
-              items-center
-              gap-2
-            "
-          >
+          <div className="flex min-w-0 items-center gap-2">
             <div
               className="
                 flex
                 h-8
                 w-8
+                shrink-0
                 items-center
                 justify-center
                 rounded-xl
@@ -288,6 +284,7 @@ export default function AuthorCard({
 
             <span
               className="
+                truncate
                 text-sm
                 font-medium
                 text-[#73798F]
@@ -301,6 +298,8 @@ export default function AuthorCard({
 
           <span
             className="
+              ml-3
+              shrink-0
               text-base
               font-bold
               text-[#5368CE]
@@ -312,11 +311,12 @@ export default function AuthorCard({
           </span>
         </div>
 
-        {/* popular work */}
+        {/* Popular work */}
         <div
           className="
             mt-5
-            min-h-[92px]
+            min-h-[108px]
+            shrink-0
             rounded-2xl
             border
             border-[#E7E9F3]
@@ -327,19 +327,13 @@ export default function AuthorCard({
             dark:bg-[#1B1E2B]
           "
         >
-          <div
-            className="
-              mb-2
-              flex
-              items-center
-              gap-2
-            "
-          >
+          <div className="mb-2 flex items-center gap-2">
             <div
               className="
                 flex
                 h-8
                 w-8
+                shrink-0
                 items-center
                 justify-center
                 rounded-xl
@@ -380,8 +374,8 @@ export default function AuthorCard({
           </p>
         </div>
 
-        {/* subjects */}
-        <div className="mt-4 min-h-[82px]">
+        {/* Subjects */}
+        <div className="mt-4">
           <p
             className="
               mb-2
@@ -398,17 +392,16 @@ export default function AuthorCard({
           </p>
 
           {subjects.length > 0 ? (
-            <div
-              className="
-                flex
-                flex-wrap
-                gap-2
-              "
-            >
+            <div className="flex flex-col gap-2">
               {subjects.map((subject) => (
                 <span
                   key={subject}
+                  title={subject}
                   className="
+                    block
+                    max-w-full
+                    truncate
+                    whitespace-nowrap
                     rounded-full
                     border
                     border-[#DDE2F4]
@@ -451,10 +444,11 @@ export default function AuthorCard({
         </div>
       </CardContent>
 
-      {/* footer */}
+      {/* Footer */}
       <CardFooter
         className="
           mt-auto
+          shrink-0
           border-t
           border-[#E7EAF3]
           bg-gradient-to-r
