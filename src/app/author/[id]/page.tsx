@@ -1,10 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  getAuthor,
-  getAuthorWorks,
-  descriptionText,
-} from "@/lib/openlibrary";
+import { getAuthor, getAuthorWorks, descriptionText } from "@/lib/openlibrary";
 
 export async function generateMetadata(props: PageProps<"/author/[id]">) {
   const { id } = await props.params;
@@ -48,9 +44,7 @@ export default async function AuthorPage(props: PageProps<"/author/[id]">) {
               Also known as {author.alternate_names.join(", ")}
             </p>
           )}
-          {lifespan && (
-            <p className="mt-1 text-sm text-zinc-500">{lifespan}</p>
-          )}
+          {lifespan && <p className="mt-1 text-sm text-zinc-500">{lifespan}</p>}
         </div>
       </div>
 

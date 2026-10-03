@@ -8,9 +8,7 @@ export async function generateMetadata(props: PageProps<"/subject/[name]">) {
   return { title: `${label} books` };
 }
 
-export default async function SubjectPage(
-  props: PageProps<"/subject/[name]">,
-) {
+export default async function SubjectPage(props: PageProps<"/subject/[name]">) {
   const { name } = await props.params;
   const slug = decodeURIComponent(name).replace(/\s+/g, "_");
   const label = slug.replace(/_/g, " ");

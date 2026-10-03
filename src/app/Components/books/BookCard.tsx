@@ -22,7 +22,9 @@ export default function BookCard({
 }: BookCardProps) {
   const src =
     coverUrl("id", coverId, "M") ??
-    (editionKey ? coverUrl("olid", editionKey.replace(/^\/books\//, ""), "M") : null);
+    (editionKey
+      ? coverUrl("olid", editionKey.replace(/^\/books\//, ""), "M")
+      : null);
 
   const href = workKey ? `/books/${workIdFromKey(workKey)}` : null;
 
@@ -49,7 +51,10 @@ export default function BookCard({
         </h3>
         {authors && authors.length > 0 && (
           <p className="line-clamp-1 text-xs text-zinc-500">
-            {authors.map((a) => a.name).filter(Boolean).join(", ")}
+            {authors
+              .map((a) => a.name)
+              .filter(Boolean)
+              .join(", ")}
           </p>
         )}
         {year && <p className="mt-auto pt-1 text-xs text-zinc-400">{year}</p>}

@@ -1,187 +1,217 @@
-import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import {
-  getWork,
-  getWorkEditions,
-  getWorkRatings,
-  coverUrl,
-  descriptionText,
-  workIdFromKey,
-} from "@/lib/openlibrary";
 
-export async function generateMetadata(props: PageProps<"/books/[...id]">) {
-  const { id } = await props.params;
-  const workId = id[id.length - 1];
-  try {
-    const work = await getWork(workId);
-    return { title: work.title };
-  } catch {
-    return { title: "Book" };
-  }
+import { ArrowLeft, RefreshCcw, WifiOff } from "lucide-react";
+
+import BookDetail from "@/components/books/BookDetail";
+
+interface BookWork {
+  key: string;
+  title: string;
+
+  description?:
+    | string
+    | {
+        type?: string;
+        value: string;
+      };
+
+  covers?: number[];
+
+  subjects?: string[];
+
+  first_publish_date?: string;
+
+  authors?: {
+    author?: {
+      key?: string;
+    };
+  }[];
 }
 
-export default async function BookPage(props: PageProps<"/books/[...id]">) {
-  const { id } = await props.params;
-  const workId = id[id.length - 1];
+/* ==============================================
+   WAIT
+============================================== */
 
-  if (!/^OL\d+W$/i.test(workId)) notFound();
+function wait(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-  let work;
-  try {
-    work = await getWork(workId);
-  } catch {
-    notFound();
+/* ==============================================
+   FETCH BOOK
+============================================== */
+
+async function getBook(bookId: string): Promise<BookWork | null> {
+  const url = `https://openlibrary.org/works/${encodeURIComponent(
+    bookId,
+  )}.json`;
+
+  /*
+    Try more than once because Open Library
+    can sometimes respond slowly.
+  */
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const response = await fetch(url, {
+        next: {
+          revalidate: 3600,
+        },
+      });
+
+      if (response.status === 404) {
+        return null;
+      }
+
+      if (!response.ok) {
+        throw new Error(`Open Library returned ${response.status}`);
+      }
+
+      const data: BookWork = await response.json();
+
+      return data;
+    } catch (error) {
+      console.error(`Book fetch attempt ${attempt} failed:`, error);
+
+      /*
+        Wait before trying again.
+      */
+      if (attempt < 2) {
+        await wait(1000);
+      }
+    }
   }
 
-  // Fetch editions and ratings in parallel; both are best-effort.
-  const [editionsRes, ratingsRes] = await Promise.allSettled([
-    getWorkEditions(workId, 50),
-    getWorkRatings(workId),
-  ]);
+  return null;
+}
 
-  const editions =
-    editionsRes.status === "fulfilled" ? editionsRes.value.entries : [];
-  const ratings =
-    ratingsRes.status === "fulfilled" ? ratingsRes.value.summary : null;
+/* ==============================================
+   BOOK PAGE
+============================================== */
 
-  const coverId = work.covers?.[0];
-  const description = descriptionText(work.description);
-  const authorKeys = work.authors ?? [];
+export default async function BookPage({
+  params,
+}: {
+  params: Promise<{
+    id: string[];
+  }>;
+}) {
+  const { id } = await params;
+
+  const bookId = id?.[0];
+
+  /* ============================================
+     INVALID ID
+  ============================================ */
+
+  if (!bookId) {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-[#F8FAFF] via-[#F7F8FC] to-[#F8F4FF] px-5 py-12 text-[#20233A] transition-colors duration-300 dark:from-[#10121B] dark:via-[#12141E] dark:to-[#171320] dark:text-[#F3F4F8]">
+        <div className="mx-auto max-w-5xl">
+          <div className="rounded-[28px] border border-[#E3E7F2] bg-white p-10 text-center shadow-[0_12px_40px_rgba(72,80,130,0.07)] transition-colors dark:border-[#424B7A] dark:bg-gradient-to-br dark:from-[#181F34] dark:via-[#1C2031] dark:to-[#251B35] dark:shadow-[0_14px_40px_rgba(67,76,155,0.13)]">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#EEF2FF] to-[#F4EEFF] text-[#6658C7] dark:from-[#29365D] dark:to-[#3A294F] dark:text-[#BDB6FF]">
+              <WifiOff className="h-7 w-7" />
+            </div>
+
+            <h1 className="mt-5 text-2xl font-bold text-[#292C43] dark:text-[#F3F4F8]">
+              Invalid Book
+            </h1>
+
+            <p className="mt-2 text-sm text-[#858A9F] dark:text-[#A3A8BA]">
+              The book ID is missing.
+            </p>
+
+            <Link
+              href="/books"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#4867D6] to-[#7A4FD8] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-200/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-200/50 dark:from-[#566EE0] dark:to-[#8458D8] dark:shadow-[0_10px_28px_rgba(100,82,205,0.20)]"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Books
+            </Link>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  /* ============================================
+     FETCH BOOK
+  ============================================ */
+
+  const book = await getBook(bookId);
+
+  /* ============================================
+     API FAILED / BOOK NOT FOUND
+  ============================================ */
+
+  if (!book) {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-[#F8FAFF] via-[#F7F8FC] to-[#F8F4FF] px-5 py-16 text-[#20233A] transition-colors duration-300 dark:from-[#10121B] dark:via-[#12141E] dark:to-[#171320] dark:text-[#F3F4F8]">
+        <div className="mx-auto max-w-3xl">
+          <Link
+            href="/books"
+            className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-[#747A90] transition hover:text-[#5368CE] dark:text-[#A3A8BA] dark:hover:text-[#C2BCFF]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Books
+          </Link>
+
+          <div className="rounded-[28px] border border-[#E3E7F2] bg-white px-6 py-16 text-center shadow-[0_12px_40px_rgba(72,80,130,0.07)] transition-colors md:px-12 dark:border-[#424B7A] dark:bg-gradient-to-br dark:from-[#181F34] dark:via-[#1C2031] dark:to-[#251B35] dark:shadow-[0_14px_40px_rgba(67,76,155,0.13)]">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#EEF2FF] to-[#F4EEFF] text-[#6658C7] dark:from-[#29365D] dark:to-[#3A294F] dark:text-[#BDB6FF]">
+              <WifiOff className="h-7 w-7" />
+            </div>
+
+            <h1 className="mt-6 text-2xl font-bold text-[#292C43] dark:text-[#F3F4F8]">
+              Unable to load this book
+            </h1>
+
+            <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#858A9F] dark:text-[#A3A8BA]">
+              Open Library is taking too long to respond. This can happen
+              temporarily. Please try loading the page again.
+            </p>
+
+            <div className="mt-7 flex flex-wrap justify-center gap-3">
+              {/* TRY AGAIN */}
+
+              <Link
+                href={`/books/${bookId}`}
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#4867D6] to-[#7A4FD8] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-200/40 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-200/50 dark:from-[#566EE0] dark:to-[#8458D8] dark:shadow-[0_10px_28px_rgba(100,82,205,0.20)] dark:hover:shadow-[0_0_0_1px_rgba(116,103,216,0.24),0_14px_36px_rgba(108,85,220,0.30)]"
+              >
+                <RefreshCcw className="h-4 w-4" />
+                Try Again
+              </Link>
+
+              {/* BROWSE */}
+
+              <Link
+                href="/books"
+                className="inline-flex items-center gap-2 rounded-xl border border-[#DDE2F2] bg-white px-5 py-3 text-sm font-semibold text-[#6970A6] transition-all hover:-translate-y-0.5 hover:border-[#C8CEEC] hover:bg-[#F5F1FF] hover:text-[#7653CF] dark:border-[#465078] dark:bg-[#1A1E2C] dark:text-[#ADB6E7] dark:hover:border-[#7569D6] dark:hover:bg-[#28203A] dark:hover:text-[#CAC4FF] dark:hover:shadow-[0_0_0_1px_rgba(116,103,216,0.20),0_10px_28px_rgba(91,78,190,0.18)]"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Browse Books
+              </Link>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  /* ============================================
+     SUCCESS
+  ============================================ */
 
   return (
-    <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-12 sm:px-6">
-      {/* Header */}
-      <div className="flex flex-col gap-8 md:flex-row">
-        <div className="mx-auto w-48 shrink-0 md:mx-0 md:w-56">
-          <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl border border-black/10 bg-zinc-100 dark:border-white/10 dark:bg-zinc-800">
-            {coverUrl("id", coverId, "L") ? (
-              <Image
-                src={coverUrl("id", coverId, "L")!}
-                alt={`Cover of ${work.title}`}
-                fill
-                sizes="224px"
-                className="object-cover"
-                priority
-              />
-            ) : (
-              <div className="flex h-full items-center justify-center text-sm text-zinc-400">
-                No cover
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            {work.title}
-          </h1>
-
-          {ratings && ratings.count > 0 && (
-            <div className="mt-3 flex items-center gap-2 text-sm text-zinc-500">
-              <span className="text-amber-500">★</span>
-              <span className="font-medium text-foreground">
-                {ratings.average.toFixed(1)}
-              </span>
-              <span>({ratings.count.toLocaleString()} ratings)</span>
-            </div>
-          )}
-
-          {work.first_publish_date && (
-            <p className="mt-3 text-sm text-zinc-500">
-              First published {work.first_publish_date}
-            </p>
-          )}
-
-          {authorKeys.length > 0 && (
-            <div className="mt-4 flex flex-wrap gap-2">
-              {authorKeys.map((a) => (
-                <Link
-                  key={a.author.key}
-                  href={`/author/${workIdFromKey(a.author.key)}`}
-                  className="rounded-full bg-black/[.05] px-3 py-1 text-sm font-medium transition-colors hover:bg-black/[.1] dark:bg-white/[.08] dark:hover:bg-white/[.15]"
-                >
-                  {workIdFromKey(a.author.key)}
-                </Link>
-              ))}
-            </div>
-          )}
-
-          {description && (
-            <p className="mt-6 max-w-2xl whitespace-pre-line text-zinc-600 dark:text-zinc-400">
-              {description}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Subjects */}
-      {work.subjects && work.subjects.length > 0 && (
-        <section className="mt-12">
-          <h2 className="mb-4 text-xl font-semibold">Subjects</h2>
-          <div className="flex flex-wrap gap-2">
-            {work.subjects.slice(0, 24).map((s) => (
-              <Link
-                key={s}
-                href={`/subject/${encodeURIComponent(s.toLowerCase().replace(/\s+/g, "_"))}`}
-                className="rounded-full border border-black/10 px-3 py-1 text-sm text-zinc-600 transition-colors hover:bg-black/[.04] dark:border-white/15 dark:text-zinc-300 dark:hover:bg-white/[.08]"
-              >
-                {s}
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Editions */}
-      {editions.length > 0 && (
-        <section className="mt-12">
-          <h2 className="mb-4 text-xl font-semibold">
-            Editions{" "}
-            <span className="text-base font-normal text-zinc-400">
-              ({editions.length})
-            </span>
-          </h2>
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {editions.slice(0, 24).map((ed) => (
-              <li
-                key={ed.key}
-                className="rounded-xl border border-black/[.08] bg-white p-4 dark:border-white/10 dark:bg-zinc-900"
-              >
-                <p className="line-clamp-2 font-medium">{ed.title}</p>
-                <p className="mt-1 text-xs text-zinc-500">
-                  {[ed.publish_date, ed.publishers?.[0], ed.physical_format]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </p>
-                {ed.number_of_pages && (
-                  <p className="mt-1 text-xs text-zinc-400">
-                    {ed.number_of_pages} pages
-                  </p>
-                )}
-                {ed.isbn_13?.[0] && (
-                  <p className="mt-1 font-mono text-xs text-zinc-400">
-                    ISBN {ed.isbn_13[0]}
-                  </p>
-                )}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {/* JSON API link */}
-      <p className="mt-12 text-xs text-zinc-400">
-        Raw data:{" "}
-        <a
-          href={`https://openlibrary.org/works/${workId}.json`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline hover:text-foreground"
+    <main className="min-h-screen bg-gradient-to-br from-[#F8FAFF] via-[#F7F8FC] to-[#F8F4FF] px-5 py-10 text-[#20233A] transition-colors duration-300 dark:from-[#10121B] dark:via-[#12141E] dark:to-[#171320] dark:text-[#F3F4F8]">
+      <div className="mx-auto max-w-7xl">
+        <Link
+          href="/books"
+          className="mb-7 inline-flex items-center gap-2 rounded-xl border border-[#DDE2F2] bg-white px-4 py-2.5 text-sm font-semibold text-[#6970A6] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#C8CEEC] hover:bg-[#F5F1FF] hover:text-[#7653CF] dark:border-[#465078] dark:bg-[#1A1E2C] dark:text-[#ADB6E7] dark:hover:border-[#7569D6] dark:hover:bg-[#28203A] dark:hover:text-[#CAC4FF] dark:hover:shadow-[0_0_0_1px_rgba(116,103,216,0.20),0_10px_28px_rgba(91,78,190,0.18)]"
         >
-          openlibrary.org/works/{workId}.json
-        </a>
-      </p>
+          <ArrowLeft className="h-4 w-4" />
+          Back to Books
+        </Link>
+
+        <BookDetail book={book} bookId={bookId} />
+      </div>
     </main>
   );
 }

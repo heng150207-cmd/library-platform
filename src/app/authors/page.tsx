@@ -1,13 +1,14 @@
-import BookList from "@/components/books/BookList";
+import AuthorList from "@/components/authors/AuthorList";
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Books",
+  title: "Authors",
 };
-export default function BooksPage() {
+export default function AuthorsPage() {
   return (
     <main className="min-h-screen">
-      <BookList />
+      <AuthorList />
     </main>
   );
 }
