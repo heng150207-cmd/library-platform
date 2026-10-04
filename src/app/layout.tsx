@@ -3,14 +3,27 @@ import "./globals.css";
 import ThemeProvider from "@/components/ThemeProvider";
 import LayoutContent from "@/components/LayoutContent";
 
-// set NEXT_PUBLIC_SITE_URL in your hosting dashboard, e.g. https://just-read.vercel.app
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+// order: your own variable, then the production url vercel provides, then localhost
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
 
 const description =
   "Discover books, explore authors, save your favorites, and find your next story with JUST READ.";
 
+const thumbnail = {
+  url: "/images/just-read-thumbnail.png",
+  width: 1200,
+  height: 630,
+  alt: "JUST READ",
+  type: "image/png",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  applicationName: "JUST READ",
   title: {
     default: "Home | JUST READ",
     template: "%s | JUST READ",
@@ -26,33 +39,33 @@ export const metadata: Metadata = {
     "Saved Books",
     "Book Discovery",
   ],
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/images/just-read-logo.png",
     shortcut: "/images/just-read-logo.png",
     apple: "/images/just-read-logo.png",
   },
+  // facebook, messenger, whatsapp, telegram, linkedin, discord, slack
   openGraph: {
     title: {
       default: "Home | JUST READ",
       template: "%s | JUST READ",
     },
     description,
+    url: "/",
     siteName: "JUST READ",
+    locale: "en_US",
     type: "website",
-    images: [
-      {
-        url: "/images/just-read-thumbnail.png",
-        width: 1200,
-        height: 630,
-        alt: "JUST READ",
-      },
-    ],
+    images: [thumbnail],
   },
+  // x (twitter)
   twitter: {
     card: "summary_large_image",
     title: "JUST READ",
     description,
-    images: ["/images/just-read-thumbnail.png"],
+    images: [thumbnail],
   },
 };
 

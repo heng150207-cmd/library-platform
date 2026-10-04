@@ -15,8 +15,48 @@ import AuthorImage from "@/components/authors/AuthorImage";
 import HomeSavedPreview from "@/components/home/HomeSavedPreview";
 import HeroAuthors from "@/components/home/HeroAuthor";
 
+const description =
+  "JUST READ is a book discovery platform where you can search millions of books from Open Library, explore authors and their works, save your favorite books, and find your next story.";
+
+const thumbnail = {
+  url: "/images/just-read-thumbnail.png",
+  width: 1200,
+  height: 630,
+  alt: "JUST READ - Discover Your Story",
+  type: "image/png",
+};
+
 export const metadata: Metadata = {
   title: "Home",
+  description,
+  keywords: [
+    "JUST READ",
+    "Books",
+    "Authors",
+    "Open Library",
+    "Book Search",
+    "Saved Books",
+    "Book Discovery",
+    "Reading",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Home | JUST READ",
+    description,
+    url: "/",
+    siteName: "JUST READ",
+    locale: "en_US",
+    type: "website",
+    images: [thumbnail],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Home | JUST READ",
+    description,
+    images: [thumbnail],
+  },
 };
 
 interface Book {
