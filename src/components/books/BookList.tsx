@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import BookCard, { BookType } from "./BookCard";
 import BookSearch from "./BookSearch";
 
@@ -11,20 +11,25 @@ interface OpenLibraryResponse {
   docs: BookType[];
 }
 
+const LIMIT = 20;
+
 export default function BookList() {
   const [books, setBooks] = useState<BookType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("programming");
   const [totalBooks, setTotalBooks] = useState(0);
+  const [page, setPage] = useState(1);
 
-  const fetchBooks = async (query: string) => {
+  const totalPages = Math.max(1, Math.ceil(totalBooks / LIMIT));
+
+  const fetchBooks = async (query: string, pageNumber: number) => {
     try {
       setLoading(true);
       setError("");
 
       const response = await fetch(
-        `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=20`,
+        `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=${LIMIT}&page=${pageNumber}`,
       );
 
       if (!response.ok) {
@@ -44,11 +49,17 @@ export default function BookList() {
   };
 
   useEffect(() => {
-    fetchBooks(search);
-  }, [search]);
+    fetchBooks(search, page);
+  }, [search, page]);
 
   const handleSearch = (query: string) => {
     setSearch(query);
+    setPage(1); // new search starts from the first page
+  };
+
+  const goToPage = (newPage: number) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -83,7 +94,7 @@ export default function BookList() {
 
           <button
             type="button"
-            onClick={() => fetchBooks(search)}
+            onClick={() => fetchBooks(search, page)}
             className="px-4 py-2 rounded-lg bg-primary text-primary-foreground"
           >
             Try Again
@@ -118,15 +129,44 @@ export default function BookList() {
               <p className="text-muted-foreground mt-2">Try another keyword.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {books.map((book, index) => (
-                <BookCard
-                  key={`${book.key}-${index}`}
-                  book={book}
-                  priority={index < 4}
-                />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {books.map((book, index) => (
+                  <BookCard
+                    key={`${book.key}-${index}`}
+                    book={book}
+                    priority={index < 4}
+                  />
+                ))}
+              </div>
+
+              {/* Pagination */}
+              <div className="mt-10 flex items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => goToPage(page - 1)}
+                  disabled={page === 1}
+                  className="flex h-12 items-center gap-2 rounded-2xl border border-[#DDE2F2] bg-white px-5 text-sm font-semibold text-[#655CC1] shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[#F5F2FF] disabled:pointer-events-none disabled:opacity-50 dark:border-[#465078] dark:bg-[#1A1E2C] dark:text-[#C2BCFF] dark:hover:bg-[#272039]"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  Previous
+                </button>
+
+                <span className="flex h-12 min-w-12 items-center justify-center rounded-2xl bg-gradient-to-r from-[#4867D6] to-[#7A4FD8] px-4 text-sm font-semibold text-white shadow-lg shadow-indigo-200/50">
+                  {page}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => goToPage(page + 1)}
+                  disabled={page >= totalPages}
+                  className="flex h-12 items-center gap-2 rounded-2xl border border-[#DDE2F2] bg-white px-5 text-sm font-semibold text-[#655CC1] shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[#F5F2FF] disabled:pointer-events-none disabled:opacity-50 dark:border-[#465078] dark:bg-[#1A1E2C] dark:text-[#C2BCFF] dark:hover:bg-[#272039]"
+                >
+                  Next
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            </>
           )}
         </>
       )}
