@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
 import ThemeProvider from "@/components/ThemeProvider";
 import LayoutContent from "@/components/LayoutContent";
 
-export const metadata: Metadata = {
-  metadataBase: new URL("http://localhost:3000"),
+// set NEXT_PUBLIC_SITE_URL in your hosting dashboard, e.g. https://just-read.vercel.app
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
+const description =
+  "Discover books, explore authors, save your favorites, and find your next story with JUST READ.";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Home | JUST READ",
     template: "%s | JUST READ",
   },
-
   description:
     "JUST READ is a book discovery platform where users can explore books, discover authors, save favorite books, and view recent Open Library activity.",
-
   keywords: [
     "JUST READ",
     "Books",
@@ -24,26 +26,19 @@ export const metadata: Metadata = {
     "Saved Books",
     "Book Discovery",
   ],
-
   icons: {
     icon: "/images/just-read-logo.png",
     shortcut: "/images/just-read-logo.png",
     apple: "/images/just-read-logo.png",
   },
-
   openGraph: {
     title: {
       default: "Home | JUST READ",
       template: "%s | JUST READ",
     },
-
-    description:
-      "Discover books, explore authors, save your favorites, and find your next story with JUST READ.",
-
+    description,
     siteName: "JUST READ",
-
     type: "website",
-
     images: [
       {
         url: "/images/just-read-thumbnail.png",
@@ -53,47 +48,22 @@ export const metadata: Metadata = {
       },
     ],
   },
-
   twitter: {
     card: "summary_large_image",
-
     title: "JUST READ",
-
-    description:
-      "Discover books, explore authors, save your favorites, and find your next story with JUST READ.",
-
-    images: [
-      "/images/just-read-thumbnail.png",
-    ],
+    description,
+    images: ["/images/just-read-thumbnail.png"],
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-    >
-      <body
-        className="
-          min-h-screen
-          bg-[#F7F8FC]
-          text-[#20233A]
-          transition-colors
-          duration-300
-
-          dark:bg-[#11131C]
-          dark:text-[#F1F2F7]
-        "
-      >
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-screen bg-[#F7F8FC] text-[#20233A] transition-colors duration-300 dark:bg-[#11131C] dark:text-[#F1F2F7]">
         <ThemeProvider>
-          <LayoutContent>
-            {children}
-          </LayoutContent>
+          <LayoutContent>{children}</LayoutContent>
         </ThemeProvider>
       </body>
     </html>

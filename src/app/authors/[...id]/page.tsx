@@ -94,10 +94,6 @@ export default async function AuthorPage({
   ]);
 
   return (
-    <AuthorDetail
-      author={author}
-      works={works}
-      authorId={authorId}
-    />
+    <AuthorDetail author={author} works={works} authorId={authorId}/>
   );
 }

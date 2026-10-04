@@ -21,8 +21,7 @@ export default function AuthorImage({
     setImageError(false);
   }, [authorId]);
 
-  const imageUrl =
-    `https://covers.openlibrary.org/a/olid/${authorId}-L.jpg?default=false`;
+  const imageUrl = `https://covers.openlibrary.org/a/olid/${authorId}-L.jpg?default=false`;
 
   const initials = name
     .trim()
@@ -34,21 +33,10 @@ export default function AuthorImage({
   if (imageError) {
     return (
       <div
-        className={`
-          w-full
-          h-full
-          bg-muted
-          flex
-          items-center
-          justify-center
-          text-muted-foreground
-          ${className}
-        `}
+        className={`w-full h-full bg-muted flex items-center justify-center text-muted-foreground ${className}`}
       >
         {initials ? (
-          <span className="text-2xl font-bold">
-            {initials}
-          </span>
+          <span className="text-2xl font-bold">{initials}</span>
         ) : (
           <User className="w-8 h-8" />
         )}
@@ -63,12 +51,7 @@ export default function AuthorImage({
       loading={priority ? "eager" : "lazy"}
       fetchPriority={priority ? "high" : "auto"}
       onError={() => setImageError(true)}
-      className={`
-        w-full
-        h-full
-        object-cover
-        ${className}
-      `}
+      className={`w-full h-full object-cover ${className}`}
     />
   );
 }

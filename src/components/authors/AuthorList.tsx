@@ -1,15 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Users,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Users } from "lucide-react";
 
-import AuthorCard, {
-  type AuthorType,
-} from "./AuthorCard";
+import AuthorCard, { type AuthorType } from "./AuthorCard";
 import AuthorSearch from "./AuthorSearch";
 
 interface AuthorSearchResponse {
@@ -25,43 +19,35 @@ export default function AuthorList() {
   const [authors, setAuthors] = useState<AuthorType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("tolkien");
+  const [query, setQuery] = useState("all");
   const [page, setPage] = useState(1);
   const [totalAuthors, setTotalAuthors] = useState(0);
 
   // fetchAuthors
-  const fetchAuthors = async (
-    searchQuery: string,
-    currentPage: number
-  ) => {
+  const fetchAuthors = async (searchQuery: string, currentPage: number) => {
     try {
       setLoading(true);
       setError("");
       const response = await fetch(
         `https://openlibrary.org/search/authors.json?q=${encodeURIComponent(
-          searchQuery
-        )}&limit=${LIMIT}&page=${currentPage}`
+          searchQuery,
+        )}&limit=${LIMIT}&page=${currentPage}`,
       );
       if (!response.ok) {
-        throw new Error(
-          `Failed to fetch authors: ${response.status}`
-        );
+        throw new Error(`Failed to fetch authors: ${response.status}`);
       }
-  //Create AutherSearchResponse to catch value from Api store it as object
-      const data: AuthorSearchResponse =
-        await response.json();
+      //Create AutherSearchResponse to catch value from Api store it as object
+      const data: AuthorSearchResponse = await response.json();
       setAuthors(data.docs ?? []);
       setTotalAuthors(data.numFound ?? 0);
     } catch (error) {
       console.error("Failed to fetch authors:", error);
-      setError(
-        "Something went wrong while loading authors."
-      );
+      setError("Something went wrong while loading authors.");
     } finally {
       setLoading(false);
     }
   };
-  //Use useEffect for un fetchAuthors 
+  //Use useEffect for use fetchAuthors
   useEffect(() => {
     fetchAuthors(query, page);
   }, [query, page]);
@@ -74,9 +60,7 @@ export default function AuthorList() {
   const totalPages = Math.ceil(totalAuthors / LIMIT);
 
   const previousPage = () => {
-    setPage((currentPage) =>
-      Math.max(1, currentPage - 1)
-    );
+    setPage((currentPage) => Math.max(1, currentPage - 1));
   };
 
   const nextPage = () => {
@@ -162,11 +146,8 @@ export default function AuthorList() {
 
       {/* Search */}
       <div className="mb-8">
-      {/* after handleSearch the logic will continue to the onSearch and data will show */}
-        <AuthorSearch
-          onSearch={handleSearch}
-          defaultValue="tolkien"
-        />
+        {/* after handleSearch the logic will continue to the onSearch and data will show */}
+        <AuthorSearch onSearch={handleSearch} defaultValue="all" />
       </div>
 
       {/* Loading */}
@@ -523,7 +504,6 @@ export default function AuthorList() {
                 "
               >
                 <ChevronLeft className="h-4 w-4" />
-
                 Previous
               </button>
 
@@ -550,10 +530,7 @@ export default function AuthorList() {
 
               <button
                 type="button"
-                disabled={
-                  totalPages > 0 &&
-                  page >= totalPages
-                }
+                disabled={totalPages > 0 && page >= totalPages}
                 onClick={nextPage}
                 className="
                   flex
@@ -590,7 +567,6 @@ export default function AuthorList() {
                 "
               >
                 Next
-
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>

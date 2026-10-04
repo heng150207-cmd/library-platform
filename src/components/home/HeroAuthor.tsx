@@ -48,15 +48,7 @@ export default function HeroAuthors() {
   return (
     <section className="w-full">
       <div className="w-full overflow-x-auto">
-        <div
-          className="
-            flex
-            h-[500px]
-            min-w-[950px]
-            gap-3
-            lg:min-w-0
-          "
-        >
+        <div className="flex h-[500px] min-w-[950px] gap-3 lg:min-w-0">
           {authors.map((author, index) => {
             const isActive = activeIndex === index;
 
@@ -64,106 +56,42 @@ export default function HeroAuthors() {
               <div
                 key={author.image}
                 onMouseEnter={() => setActiveIndex(index)}
-                className={`
-                  relative
-                  h-full
-                  cursor-pointer
-                  overflow-hidden
-                  rounded-[24px]
-                  transition-all
-                  duration-500
-                  ease-in-out
-
-                  ${
-                    isActive
-                      ? "flex-[3.3] min-w-[320px]"
-                      : "flex-1 min-w-[110px]"
-                  }
-                `}
+                className={`relative h-full cursor-pointer overflow-hidden rounded-[24px] transition-all duration-500 ease-in-out ${
+                  isActive ? "flex-[3.3] min-w-[320px]" : "flex-1 min-w-[110px]"
+                }`}
               >
-                {/* IMAGE */}
+                {/* Image */}
                 <Image
                   src={author.image}
                   alt={author.name}
                   fill
                   priority={index === 0}
-                  sizes={
+                  sizes={isActive ? "(max-width: 768px) 320px, 430px" : "150px"}
+                  className={`object-cover object-top transition-all duration-700 ease-in-out ${
+                    isActive ? "scale-100 grayscale-0" : "scale-105 grayscale"
+                  }`}
+                />
+
+                {/* Dark gradient, only visible on the active card */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent transition-opacity duration-500 ${
+                    isActive ? "opacity-100" : "opacity-0"
+                  }`}
+                />
+
+                {/* Text over the image */}
+                <div
+                  className={`absolute bottom-0 left-0 right-0 p-6 text-white transition-all duration-500 ${
                     isActive
-                      ? "(max-width: 768px) 320px, 430px"
-                      : "150px"
-                  }
-                  className={`
-                    object-cover
-                    object-top
-                    transition-all
-                    duration-700
-                    ease-in-out
-
-                    ${
-                      isActive
-                        ? "scale-100 grayscale-0"
-                        : "scale-105 grayscale"
-                    }
-                  `}
-                />
-
-                {/* DARK GRADIENT ONLY AT BOTTOM */}
-                <div
-                  className={`
-                    absolute
-                    inset-0
-                    bg-gradient-to-t
-                    from-black/85
-                    via-black/10
-                    to-transparent
-                    transition-opacity
-                    duration-500
-
-                    ${
-                      isActive
-                        ? "opacity-100"
-                        : "opacity-0"
-                    }
-                  `}
-                />
-
-                {/* TEXT INSIDE IMAGE */}
-                <div
-                  className={`
-                    absolute
-                    bottom-0
-                    left-0
-                    right-0
-                    p-6
-                    text-white
-                    transition-all
-                    duration-500
-
-                    ${
-                      isActive
-                        ? "translate-y-0 opacity-100"
-                        : "translate-y-8 opacity-0"
-                    }
-                  `}
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
                 >
-                  <h2
-                    className="
-                      text-2xl
-                      font-bold
-                      md:text-3xl
-                    "
-                  >
+                  <h2 className="text-2xl font-bold md:text-3xl">
                     {author.name}
                   </h2>
 
-                  <p
-                    className="
-                      mt-1
-                      text-sm
-                      text-white/75
-                      md:text-base
-                    "
-                  >
+                  <p className="mt-1 text-sm text-white/75 md:text-base">
                     {author.description}
                   </p>
                 </div>
